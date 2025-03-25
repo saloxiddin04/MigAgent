@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+.btn {
+	outline: none;
+	border: none;
+	border-radius: 8px;
+	padding: 10px 25px;
+}
+
+.btn-primary {
+	background: rgb(59, 130, 246);
+	color: #fff;
+	transition: 0.4s;
+}
+
+.btn-primary:hover {
+	background: rgb(22, 100, 243);
+}
+
+
