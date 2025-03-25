@@ -1,9 +1,11 @@
 import React from 'react';
-import {NavLink} from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
 import logo from "../assets/logo_header.png"
 import {getUserData, logout} from "../auth/jwtService.js";
 
 const Navbar = () => {
+	const navigate = useNavigate()
+	
 	return (
 		<>
 			<header className="bg-white fixed shadow-lg w-100 p-3 w-full z-50">
@@ -21,7 +23,7 @@ const Navbar = () => {
 						{getUserData() ? (
 							<button className="btn btn-danger" onClick={logout}>Tizimdan chiqish</button>
 						) : (
-							<button className="btn btn-primary">Tizimga kirish</button>
+							<button className="btn btn-primary" onClick={() => navigate("/login")}>Tizimga kirish</button>
 						)}
 					</div>
 				</nav>

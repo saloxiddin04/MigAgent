@@ -26,4 +26,17 @@
 	background: rgb(248, 3, 3);
 }
 
+.form-input {
+	border-radius: 8px;
+	outline: none;
+	border: 1px solid rgb(59, 130, 246);
+	padding: 10px 25px;
+	width: 100%;
+	transition: all 0.4s;
+}
+
+.form-input:focus {
+	box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.3);
+	border: 1px solid rgb(22, 100, 243);
+}
 
