@@ -23,7 +23,7 @@ const Main = () => {
 				>
 					<SwiperSlide className="w-full">
 						<div
-							className="pt-5 flex sm:flex-col md:flex-row justify-between items-center">
+							className="pt-5 flex flex-col lg:flex-row justify-between items-center">
 							<img src={image1} alt="Image" className="w-[500px] h-auto w-50 mb-3 md:mb-0"/>
 							<p className="px-3 text-3xl">
 								<strong className="text-[#3f79bc]">Namunaviy Sinov testlari </strong>
@@ -34,7 +34,7 @@ const Main = () => {
 					</SwiperSlide>
 					<SwiperSlide className="w-full">
 						<div
-							className="pt-5 flex sm:flex-col md:flex-row justify-between items-center">
+							className="pt-5 flex flex-col lg:flex-row justify-between items-center">
 							<img src={image} alt="Image" className="w-[500px] h-auto w-50 mb-3 md:mb-0"/>
 							<p className="px-3 text-3xl">
 								Ushbu sahifada Siz
