@@ -3,10 +3,13 @@ import {Swiper, SwiperSlide} from "swiper/react";
 import {Autoplay} from "swiper/modules";
 import image from "../../assets/image.png";
 import image1 from "../../assets/image1.png";
+import Navbar from "../../components/Navbar.jsx";
+import Footer from "../../components/Footer.jsx";
 
 const Main = () => {
 	return (
 		<main className="bg-[rgb(248,249,250)]">
+			<Navbar/>
 			<div className="container mx-auto pt-36">
 				<Swiper
 					className={"mySwiper w-full"}
@@ -46,6 +49,7 @@ const Main = () => {
 					<button className="btn btn-primary">Test boshlash</button>
 				</div>
 			</div>
+			<Footer/>
 		</main>
 	);
 };

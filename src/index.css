@@ -5,16 +5,25 @@
 	border: none;
 	border-radius: 8px;
 	padding: 10px 25px;
+	color: #fff;
+	transition: 0.4s;
+	cursor: pointer;
 }
 
 .btn-primary {
 	background: rgb(59, 130, 246);
-	color: #fff;
-	transition: 0.4s;
+}
+
+.btn-danger {
+	background: rgb(239 68 68);
 }
 
 .btn-primary:hover {
 	background: rgb(22, 100, 243);
+}
+
+.btn-danger:hover {
+	background: rgb(248, 3, 3);
 }
 
 
