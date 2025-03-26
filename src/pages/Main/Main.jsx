@@ -9,7 +9,6 @@ import Footer from "../../components/Footer.jsx";
 const Main = () => {
 	return (
 		<main className="bg-[rgb(248,249,250)]">
-			<Navbar/>
 			<div className="container mx-auto pt-36">
 				<Swiper
 					className={"mySwiper w-full"}
@@ -49,7 +48,6 @@ const Main = () => {
 					<button className="btn btn-primary">Test boshlash</button>
 				</div>
 			</div>
-			<Footer/>
 		</main>
 	);
 };
