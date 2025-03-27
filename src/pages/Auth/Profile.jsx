@@ -4,10 +4,10 @@ const Profile = () => {
 	return (
 		<>
 			<div className="w-full min-h-screen flex items-center justify-center bg-[rgb(248,249,250)]">
-				<div className="w-3/4">
-					<div className="mt-8">
+				<div className="w-3/4 lg:w-3/4 sm:w-3/4">
+					<div className="mt-16">
 						<form className="w-full flex justify-between flex-wrap">
-							<div className="my-4 w-[49%]">
+							<div className="my-4 lg:w-[49%] w-full">
 								<div className="flex justify-between">
 									<label
 										htmlFor="name"
@@ -29,7 +29,7 @@ const Profile = () => {
 								/>
 							</div>
 							
-							<div className="my-4 w-[49%]">
+							<div className="my-4 lg:w-[49%] w-full">
 								<div className="flex justify-between">
 									<label
 										htmlFor="surname"
@@ -51,7 +51,7 @@ const Profile = () => {
 								/>
 							</div>
 							
-							<div className="my-4 w-[49%]">
+							<div className="my-4 lg:w-[49%] w-full">
 								<div className="flex justify-between">
 									<label
 										htmlFor="midname"
@@ -73,7 +73,7 @@ const Profile = () => {
 								/>
 							</div>
 							
-							<div className="my-4 w-[49%]">
+							<div className="my-4 lg:w-[49%] w-full">
 								<div className="flex justify-between">
 									<label
 										htmlFor="phone_number"
@@ -95,7 +95,7 @@ const Profile = () => {
 								/>
 							</div>
 							
-							<div className="my-4 w-[49%]">
+							<div className="my-4 lg:w-[49%] w-full">
 								<div className="flex justify-between">
 									<label
 										htmlFor="country"
@@ -109,13 +109,14 @@ const Profile = () => {
 									name="country"
 									id="country"
 									className="form-input"
+									required
 								>
 									<option value="">Tanlang...</option>
 									<option value="">O'zbekiston</option>
 								</select>
 							</div>
 							
-							<div className="my-4 w-[49%]">
+							<div className="my-4 lg:w-[49%] w-full">
 								<div className="flex justify-between">
 									<label
 										htmlFor="country"
@@ -129,6 +130,7 @@ const Profile = () => {
 									name="country"
 									id="country"
 									className="form-input"
+									required
 								>
 									<option value="">Tanlang...</option>
 									<option value="">Toshkent sh</option>
@@ -136,7 +138,7 @@ const Profile = () => {
 								</select>
 							</div>
 							
-							<div className="my-4 w-[49%]">
+							<div className="my-4 lg:w-[49%] w-full">
 								<div className="flex justify-between">
 									<label
 										htmlFor="country"
@@ -150,13 +152,14 @@ const Profile = () => {
 									name="country"
 									id="country"
 									className="form-input"
+									required
 								>
 									<option value="">Tanlang...</option>
 									<option value="">Yunusobod tumani</option>
 								</select>
 							</div>
 							
-							<div className="my-4 w-[49%]">
+							<div className="my-4 lg:w-[49%] w-full">
 								<div className="flex justify-between">
 									<label
 										htmlFor="phone_number"
@@ -178,7 +181,7 @@ const Profile = () => {
 								/>
 							</div>
 							
-							<div className="w-[49%]">
+							<div className="lg:w-[49%] w-full">
 								<div>
 									<label
 										htmlFor="default-checkbox"
@@ -234,7 +237,7 @@ const Profile = () => {
 								</div>
 							</div>
 							
-							<div className="w-[49%]">
+							<div className="lg:w-[49%] w-full">
 								<div className="mt-2">
 									<label
 										htmlFor="default-checkbox"
