@@ -1,12 +1,42 @@
-import React from 'react';
+import React, {useState} from 'react';
+import {useNavigate} from "react-router-dom";
+import {updateUserAuth} from "../../auth/jwtService.js";
+import {toast} from "react-toastify";
 
 const Profile = () => {
+	
+	const navigate = useNavigate()
+	
+	const [first_name, setFirstName] = useState(null)
+	const [last_name, setLastNane] = useState(null)
+	const [mid_name, setMidName] = useState(null)
+	const [platform_usage, setPlatformUsage] = useState(null)
+	const [work_abroad_status, setWorkAbroadStatus] = useState(null)
+	
+	const updateUser = (e) => {
+		e.preventDefault();
+		updateUserAuth({first_name, last_name, mid_name, platform_usage, work_abroad_status})
+			.then(() => {
+				toast.success("Successfully");
+				navigate("/")
+			})
+			.catch((err) => {
+				toast.error(err.response.data.error || err.message);
+			});
+	};
+	
+	// "first_name": "asliddin",
+	// 	"last_name": "tukhtasinov",
+	// 	"mid_name": "asliddin",
+	// 	"platform_usage": 0, // 0 -> "Rus tili (patent) imtihoniga tayyorgarlik", 1 -> "Bilimimni sinab ko‘rish"
+	// 	"work_abroad_status": 0
+	
 	return (
 		<>
 			<div className="w-full min-h-screen flex items-center justify-center bg-[rgb(248,249,250)]">
 				<div className="w-3/4 lg:w-3/4 sm:w-3/4">
 					<div className="mt-16">
-						<form className="w-full flex justify-between flex-wrap">
+						<form className="w-full flex justify-between flex-wrap" onSubmit={updateUser}>
 							<div className="my-4 lg:w-[49%] w-full">
 								<div className="flex justify-between">
 									<label
@@ -24,8 +54,8 @@ const Profile = () => {
 									name="name"
 									placeholder="Ismingiz"
 									className="form-input"
-									// value={user.name}
-									// onChange={(e) => setUser({...user, name: e.target.value})}
+									value={first_name || ""}
+									onChange={(e) => setFirstName(e.target.value)}
 								/>
 							</div>
 							
@@ -46,8 +76,8 @@ const Profile = () => {
 									name="surname"
 									placeholder="Familiyangiz"
 									className="form-input"
-									// value={user.name}
-									// onChange={(e) => setUser({...user, name: e.target.value})}
+									value={last_name || ""}
+									onChange={(e) => setLastNane(e.target.value)}
 								/>
 							</div>
 							
@@ -68,30 +98,8 @@ const Profile = () => {
 									name="midname"
 									placeholder="Sharifingiz"
 									className="form-input"
-									// value={user.name}
-									// onChange={(e) => setUser({...user, name: e.target.value})}
-								/>
-							</div>
-							
-							<div className="my-4 lg:w-[49%] w-full">
-								<div className="flex justify-between">
-									<label
-										htmlFor="phone_number"
-										className="text-sm text-blue-400 ml-4 mb-1"
-									>
-										Telefon raqam
-									</label>
-								</div>
-								
-								<input
-									id="phone_number"
-									required
-									type="text"
-									name="phone_number"
-									placeholder="Telefon raqam"
-									className="form-input"
-									// value={user.name}
-									// onChange={(e) => setUser({...user, name: e.target.value})}
+									value={mid_name || ""}
+									onChange={(e) => setMidName(e.target.value)}
 								/>
 							</div>
 							
@@ -109,7 +117,7 @@ const Profile = () => {
 									name="country"
 									id="country"
 									className="form-input"
-									required
+									// required
 								>
 									<option value="">Tanlang...</option>
 									<option value="">O'zbekiston</option>
@@ -130,7 +138,7 @@ const Profile = () => {
 									name="country"
 									id="country"
 									className="form-input"
-									required
+									// required
 								>
 									<option value="">Tanlang...</option>
 									<option value="">Toshkent sh</option>
@@ -152,7 +160,7 @@ const Profile = () => {
 									name="country"
 									id="country"
 									className="form-input"
-									required
+									// required
 								>
 									<option value="">Tanlang...</option>
 									<option value="">Yunusobod tumani</option>
@@ -171,7 +179,7 @@ const Profile = () => {
 								
 								<input
 									id="phone_number"
-									required
+									// required
 									type="text"
 									name="phone_number"
 									placeholder="Manzil kiritish"
@@ -192,14 +200,14 @@ const Profile = () => {
 								</div>
 								<div className="flex items-center">
 									<input
-										id="default-checkbox"
+										id="work_abroad_status0"
 										type="checkbox"
 										className="w-4 h-4 rounded-md text-blue-600 bg-gray-100 border-gray-200 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-1 dark:bg-gray-700 dark:border-gray-600"
-										// value={isAgree}
-										// onChange={(e) => setIsAgree(e.target.checked)}
+										checked={work_abroad_status === 0}
+										onChange={() => setWorkAbroadStatus(0)}
 									/>
 									<label
-										htmlFor="default-checkbox"
+										htmlFor="work_abroad_status0"
 										className="ml-2 text-sm text-black"
 									>
 										Xa
@@ -207,14 +215,14 @@ const Profile = () => {
 								</div>
 								<div className="flex items-center mt-1">
 									<input
-										id="default-checkbox"
+										id="work_abroad_status1"
 										type="checkbox"
 										className="w-4 h-4 rounded-md text-blue-600 bg-gray-100 border-gray-200 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-1 dark:bg-gray-700 dark:border-gray-600"
-										// value={isAgree}
-										// onChange={(e) => setIsAgree(e.target.checked)}
+										checked={work_abroad_status === 1}
+										onChange={() => setWorkAbroadStatus(1)}
 									/>
 									<label
-										htmlFor="default-checkbox"
+										htmlFor="work_abroad_status1"
 										className="ml-2 text-sm text-black"
 									>
 										Yo'q
@@ -222,14 +230,14 @@ const Profile = () => {
 								</div>
 								<div className="flex items-center mt-1">
 									<input
-										id="default-checkbox"
+										id="work_abroad_status2"
 										type="checkbox"
 										className="w-4 h-4 rounded-md text-blue-600 bg-gray-100 border-gray-200 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-1 dark:bg-gray-700 dark:border-gray-600"
-										// value={isAgree}
-										// onChange={(e) => setIsAgree(e.target.checked)}
+										checked={work_abroad_status === 2}
+										onChange={() => setWorkAbroadStatus(2)}
 									/>
 									<label
-										htmlFor="default-checkbox"
+										htmlFor="work_abroad_status2"
 										className="ml-2 text-sm text-black"
 									>
 										Ishlash istagim bor
@@ -248,14 +256,14 @@ const Profile = () => {
 								</div>
 								<div className="flex items-center mt-1">
 									<input
-										id="default-checkbox"
+										id="platform_usage0"
 										type="checkbox"
 										className="w-4 h-4 rounded-md text-blue-600 bg-gray-100 border-gray-200 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-1 dark:bg-gray-700 dark:border-gray-600"
-										// value={isAgree}
-										// onChange={(e) => setIsAgree(e.target.checked)}
+										checked={platform_usage === 0}
+										onChange={() => setPlatformUsage(0)}
 									/>
 									<label
-										htmlFor="default-checkbox"
+										htmlFor="platform_usage0"
 										className="ml-2 text-sm text-black"
 									>
 										Rus tili (patent) imtihonlariga tayyorlanish uchun
@@ -263,14 +271,14 @@ const Profile = () => {
 								</div>
 								<div className="flex items-center mt-3">
 									<input
-										id="default-checkbox"
+										id="platform_usage1"
 										type="checkbox"
 										className="w-4 h-4 rounded-md text-blue-600 bg-gray-100 border-gray-200 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-1 dark:bg-gray-700 dark:border-gray-600"
-										// value={isAgree}
-										// onChange={(e) => setIsAgree(e.target.checked)}
+										checked={platform_usage === 1}
+										onChange={() => setPlatformUsage(1)}
 									/>
 									<label
-										htmlFor="default-checkbox"
+										htmlFor="platform_usage1"
 										className="ml-2 text-sm text-black"
 									>
 										Bilimimni sinab ko'rish uchun

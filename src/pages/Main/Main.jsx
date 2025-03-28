@@ -3,8 +3,6 @@ import {Swiper, SwiperSlide} from "swiper/react";
 import {Autoplay} from "swiper/modules";
 import image from "../../assets/image.png";
 import image1 from "../../assets/image1.png";
-import Navbar from "../../components/Navbar.jsx";
-import Footer from "../../components/Footer.jsx";
 
 const Main = () => {
 	return (

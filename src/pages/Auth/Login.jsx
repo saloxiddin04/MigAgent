@@ -1,23 +1,32 @@
 import React from "react";
-import { register } from "../../auth/jwtService";
+import {verifyCode} from "../../auth/jwtService";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import logo from "../../assets/logo_header.png"
+import {useNavigate} from "react-router-dom";
+import {useDispatch} from "react-redux";
+import {getUserDetail} from "../../redux/Slices/userDetailSlice/userDetailSlice.js";
 
 const Login = () => {
+	const dispatch = useDispatch()
+	const navigate = useNavigate()
 	
-	const [user, setUser] = useState({
-		username: "",
-		name: "",
-		email: '',
-		password: "",
-	});
+	const [code, setCode] = useState(null)
 	
 	const registerUser = (e) => {
 		e.preventDefault();
-		register(user)
-			.then(() => {
-				toast.success("Successfully registered");
+		verifyCode({code})
+			.then((res) => {
+				if (res?.data?.auth_status === "done") {
+					dispatch(getUserDetail()).then(() => {
+						navigate("/")
+						toast.success("Successfully logged");
+					})
+				} else {
+					toast.success("Successfully registered");
+					navigate("/profile")
+				}
+				console.log(res)
 			})
 			.catch((err) => {
 				toast.error(err.response.data.error || err.message);
@@ -41,14 +50,25 @@ const Login = () => {
 					<form onSubmit={registerUser}>
 						<div className="my-4">
 							<input
-								id="name"
+								id="code"
 								required
 								type="text"
-								name="name"
+								name="code"
 								placeholder="Kod"
 								className="form-input"
-								value={user.name}
-								onChange={(e) => setUser({ ...user, name: e.target.value })}
+								maxLength={6}
+								value={code || ""}
+								onChange={(e) => setCode(e.target.value)}
+							/>
+						</div>
+						<div className="my-4">
+							<input
+								id="confirm"
+								required
+								type="submit"
+								name="confirm"
+								className="btn btn-primary w-full"
+								value={"Tasdiqlash"}
 							/>
 						</div>
 					</form>
