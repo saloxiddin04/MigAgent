@@ -2,7 +2,8 @@ import axios from "axios";
 import {getAccessToken, logout} from "../auth/jwtService.js";
 
 const instance = axios.create({
-	baseURL: import.meta.env.VITE_API_URL_DEVELOP,
+	// baseURL: import.meta.env.VITE_API_URL_DEVELOP,
+	baseURL: "http://api-xorijdaish.asilbro.uz/",
 	timeout: 20000,
 	headers: {
 		Accept: "application/json"
