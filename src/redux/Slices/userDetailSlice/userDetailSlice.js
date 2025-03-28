@@ -19,6 +19,18 @@ export const getUserDetail = createAsyncThunk(
 	}
 )
 
+export const updateUser = createAsyncThunk(
+	"user/updateUser",
+	async (data) => {
+		try {
+			const response = await instance.patch("user/update", data)
+			return response.data
+		} catch (e) {
+			return e;
+		}
+	}
+)
+
 const userDetailSlice = createSlice({
 	name: "user",
 	initialState,
@@ -33,6 +45,18 @@ const userDetailSlice = createSlice({
 				state.loading = false
 			})
 			.addCase(getUserDetail.rejected, (state) => {
+				state.loading = false
+			})
+		
+		// updateUser
+		builder
+			.addCase(updateUser.pending, (state) => {
+				state.loading = true
+			})
+			.addCase(updateUser.fulfilled, (state, {payload}) => {
+				state.loading = false
+			})
+			.addCase(updateUser.rejected, (state) => {
 				state.loading = false
 			})
 	}

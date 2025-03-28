@@ -40,3 +40,21 @@
 	border: 1px solid rgb(22, 100, 243);
 }
 
+.user-block {
+	position: relative;
+}
+
+.tooltip {
+	display: none;
+	padding-top: 20px;
+	border-radius: 5px;
+	width: 150px;
+	position: absolute;
+	top: 100%;
+	right: 0;
+}
+
+.user-block:hover .tooltip{
+	display: block;
+}
+

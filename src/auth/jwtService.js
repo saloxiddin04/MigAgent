@@ -24,6 +24,7 @@ export function logout() {
 	document.cookie = "auth_status=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 	document.cookie = "user_roles=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 	window.location.reload()
+	window.location.href = "/"
 }
 
 export function setAccessToken(value) {
@@ -60,7 +61,7 @@ export function setCookie(name, value, expirationDays) {
 	document.cookie = name + "=" + value + ";" + expires + ";path=/";
 }
 
-function getCookie(name) {
+export function getCookie(name) {
 	const cookieString = document.cookie;
 	const cookieArray = cookieString.split("; ");
 	for (const cookie of cookieArray) {

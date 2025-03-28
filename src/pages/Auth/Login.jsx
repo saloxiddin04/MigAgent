@@ -26,7 +26,6 @@ const Login = () => {
 					toast.success("Successfully registered");
 					navigate("/profile")
 				}
-				console.log(res)
 			})
 			.catch((err) => {
 				toast.error(err.response.data.error || err.message);

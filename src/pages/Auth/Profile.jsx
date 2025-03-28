@@ -1,10 +1,12 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
-import {updateUserAuth} from "../../auth/jwtService.js";
+import {getCookie, getUserData, updateUserAuth} from "../../auth/jwtService.js";
 import {toast} from "react-toastify";
+import {useDispatch} from "react-redux";
+import {getUserDetail, updateUser} from "../../redux/Slices/userDetailSlice/userDetailSlice.js";
 
 const Profile = () => {
-	
+	const dispatch = useDispatch()
 	const navigate = useNavigate()
 	
 	const [first_name, setFirstName] = useState(null)
@@ -13,30 +15,39 @@ const Profile = () => {
 	const [platform_usage, setPlatformUsage] = useState(null)
 	const [work_abroad_status, setWorkAbroadStatus] = useState(null)
 	
-	const updateUser = (e) => {
-		e.preventDefault();
-		updateUserAuth({first_name, last_name, mid_name, platform_usage, work_abroad_status})
-			.then(() => {
-				toast.success("Successfully");
-				navigate("/")
-			})
-			.catch((err) => {
-				toast.error(err.response.data.error || err.message);
-			});
-	};
+	useEffect(() => {
+		if (JSON.parse(getCookie("auth_status") || "null") === "done") {
+			setFirstName(getUserData()?.first_name)
+			setLastNane(getUserData()?.last_name)
+			setMidName(getUserData()?.mid_name)
+		}
+	}, [])
 	
-	// "first_name": "asliddin",
-	// 	"last_name": "tukhtasinov",
-	// 	"mid_name": "asliddin",
-	// 	"platform_usage": 0, // 0 -> "Rus tili (patent) imtihoniga tayyorgarlik", 1 -> "Bilimimni sinab ko‘rish"
-	// 	"work_abroad_status": 0
+	const updateAuthUser = (e) => {
+		e.preventDefault();
+		if (JSON.parse(getCookie("auth_status") || "null") === "done") {
+			dispatch(updateUser({first_name, last_name, mid_name})).then(() => {
+				toast.success("Muvofaqqiyatli yangilandi!")
+				dispatch(getUserDetail())
+			})
+		} else {
+			updateUserAuth({first_name, last_name, mid_name, platform_usage, work_abroad_status})
+				.then(() => {
+					toast.success("Successfully");
+					navigate("/")
+				})
+				.catch((err) => {
+					toast.error(err.response.data.error || err.message);
+				});
+		}
+	};
 	
 	return (
 		<>
 			<div className="w-full min-h-screen flex items-center justify-center bg-[rgb(248,249,250)]">
 				<div className="w-3/4 lg:w-3/4 sm:w-3/4">
 					<div className="mt-16">
-						<form className="w-full flex justify-between flex-wrap" onSubmit={updateUser}>
+						<form className="w-full flex justify-between flex-wrap" onSubmit={updateAuthUser}>
 							<div className="my-4 lg:w-[49%] w-full">
 								<div className="flex justify-between">
 									<label
@@ -117,6 +128,7 @@ const Profile = () => {
 									name="country"
 									id="country"
 									className="form-input"
+									disabled={JSON.parse(getCookie("auth_status") || "null") === "done"}
 									// required
 								>
 									<option value="">Tanlang...</option>
@@ -138,6 +150,7 @@ const Profile = () => {
 									name="country"
 									id="country"
 									className="form-input"
+									disabled={JSON.parse(getCookie("auth_status") || "null") === "done"}
 									// required
 								>
 									<option value="">Tanlang...</option>
@@ -160,6 +173,7 @@ const Profile = () => {
 									name="country"
 									id="country"
 									className="form-input"
+									disabled={JSON.parse(getCookie("auth_status") || "null") === "done"}
 									// required
 								>
 									<option value="">Tanlang...</option>
@@ -184,6 +198,7 @@ const Profile = () => {
 									name="phone_number"
 									placeholder="Manzil kiritish"
 									className="form-input"
+									disabled={JSON.parse(getCookie("auth_status") || "null") === "done"}
 									// value={user.name}
 									// onChange={(e) => setUser({...user, name: e.target.value})}
 								/>
@@ -205,6 +220,7 @@ const Profile = () => {
 										className="w-4 h-4 rounded-md text-blue-600 bg-gray-100 border-gray-200 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-1 dark:bg-gray-700 dark:border-gray-600"
 										checked={work_abroad_status === 0}
 										onChange={() => setWorkAbroadStatus(0)}
+										disabled={JSON.parse(getCookie("auth_status") || "null") === "done"}
 									/>
 									<label
 										htmlFor="work_abroad_status0"
@@ -220,6 +236,7 @@ const Profile = () => {
 										className="w-4 h-4 rounded-md text-blue-600 bg-gray-100 border-gray-200 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-1 dark:bg-gray-700 dark:border-gray-600"
 										checked={work_abroad_status === 1}
 										onChange={() => setWorkAbroadStatus(1)}
+										disabled={JSON.parse(getCookie("auth_status") || "null") === "done"}
 									/>
 									<label
 										htmlFor="work_abroad_status1"
@@ -235,6 +252,7 @@ const Profile = () => {
 										className="w-4 h-4 rounded-md text-blue-600 bg-gray-100 border-gray-200 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-1 dark:bg-gray-700 dark:border-gray-600"
 										checked={work_abroad_status === 2}
 										onChange={() => setWorkAbroadStatus(2)}
+										disabled={JSON.parse(getCookie("auth_status") || "null") === "done"}
 									/>
 									<label
 										htmlFor="work_abroad_status2"
@@ -261,6 +279,7 @@ const Profile = () => {
 										className="w-4 h-4 rounded-md text-blue-600 bg-gray-100 border-gray-200 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-1 dark:bg-gray-700 dark:border-gray-600"
 										checked={platform_usage === 0}
 										onChange={() => setPlatformUsage(0)}
+										disabled={JSON.parse(getCookie("auth_status") || "null") === "done"}
 									/>
 									<label
 										htmlFor="platform_usage0"
@@ -276,6 +295,7 @@ const Profile = () => {
 										className="w-4 h-4 rounded-md text-blue-600 bg-gray-100 border-gray-200 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-1 dark:bg-gray-700 dark:border-gray-600"
 										checked={platform_usage === 1}
 										onChange={() => setPlatformUsage(1)}
+										disabled={JSON.parse(getCookie("auth_status") || "null") === "done"}
 									/>
 									<label
 										htmlFor="platform_usage1"
