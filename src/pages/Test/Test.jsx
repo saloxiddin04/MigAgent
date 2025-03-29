@@ -63,13 +63,13 @@ const Test = () => {
 					
 					{selectedCategory && (
 						<div className="mt-4">
-							<ul className="mt-2 flex justify-between items-center flex-wrap">
+							<ul className="mt-2 flex justify-between items-center flex-wrap gap-2">
 								{categories
 									.find((cat) => cat.id === selectedCategory)
 									?.variant.map((variant) => (
 										<li
 											key={variant.id}
-											className={`py-2 px-4 w-[13%] text-center border border-blue-400 text-blue-400 rounded cursor-pointer ${
+											className={`py-2 px-4 w-full lg:w-[13%] sm:w-[15%] text-center border border-blue-400 text-blue-400 rounded cursor-pointer ${
 												selectedVariant === variant.id ? "bg-blue-500 text-white" : "hover:bg-gray-100"
 											}`}
 											onClick={() => setSelectedVariant(variant?.id)}
