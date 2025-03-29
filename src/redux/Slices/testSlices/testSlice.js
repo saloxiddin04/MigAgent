@@ -34,6 +34,11 @@ export const getTestsByVariant = createAsyncThunk(
 const testSlice = createSlice({
 	name: "test",
 	initialState,
+	reducers: {
+		clearQuestions: (state) => {
+			state.questions = null
+		}
+	},
 	extraReducers: builder => {
 		// getCategories
 		builder
@@ -65,4 +70,5 @@ const testSlice = createSlice({
 	}
 })
 
+export const {clearQuestions} = testSlice.actions
 export default testSlice.reducer

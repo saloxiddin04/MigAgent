@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {getCategories, getTestsByVariant} from "../../redux/Slices/testSlices/testSlice.js";
+import {clearQuestions, getCategories, getTestsByVariant} from "../../redux/Slices/testSlices/testSlice.js";
 import {api_url} from "../../plugins/axios.js";
 
 const Test = () => {
@@ -12,11 +12,17 @@ const Test = () => {
 	const [selectedVariant, setSelectedVariant] = useState(null);
 	
 	useEffect(() => {
-		dispatch(getCategories()).then(({payload}) => {
-			setSelectedCategory(payload[0]?.id)
-			setSelectedVariant(payload[0]?.variant[0]?.id)
-		})
+		dispatch(getCategories())
 	}, [dispatch])
+	
+	// useEffect(() => {
+	// 	dispatch(getCategories()).then(({payload}) => {
+	// 		if (!selectedCategory || !selectedVariant) {
+	// 			setSelectedCategory(payload[0]?.id)
+	// 			setSelectedVariant(payload[0]?.variant[0]?.id)
+	// 		}
+	// 	})
+	// }, [dispatch, selectedVariant, selectedCategory])
 	
 	useEffect(() => {
 		if (selectedVariant) {
@@ -49,7 +55,11 @@ const Test = () => {
 						{categories?.map((category) => (
 							<button
 								key={category.id}
-								onClick={() => setSelectedCategory(category?.id)}
+								onClick={() => {
+									setSelectedCategory(category?.id)
+									dispatch(clearQuestions())
+									setSelectedVariant(null)
+								}}
 								className={`px-4 py-2 rounded-t-lg transition-all ${
 									selectedCategory === category.id
 										? "bg-blue-500 text-white"
