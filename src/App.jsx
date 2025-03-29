@@ -1,15 +1,26 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {ToastContainer} from "react-toastify";
-import {Route, Routes, useLocation} from "react-router-dom";
+import {Route, Routes, useLocation, useNavigate} from "react-router-dom";
 import Main from "./pages/Main/Main.jsx";
 import Login from "./pages/Auth/Login.jsx";
 import Profile from "./pages/Auth/Profile.jsx";
 import Navbar from "./components/Navbar.jsx";
 import Footer from "./components/Footer.jsx";
+import Test from "./pages/Test/Test.jsx";
+import {getUserData} from "./auth/jwtService.js";
 
 const App = () => {
 	
 	const {pathname} = useLocation()
+	const navigate = useNavigate()
+	
+	useEffect(() => {
+		if (!getUserData() &&
+			pathname !== "/login"
+		) {
+			navigate("/");
+		}
+	}, [navigate, pathname]);
 	
 	return (
 		<>
@@ -19,6 +30,7 @@ const App = () => {
 				<Route path="/" element={<Main/>} />
 				<Route path="/login" element={<Login/>} />
 				<Route path="/profile" element={<Profile/>} />
+				<Route path="/test" element={<Test/>} />
 			</Routes>
 			
 			{pathname !== "/login" && <Footer/>}

@@ -1,7 +1,7 @@
 import instance from "../plugins/axios.js";
 
 export function verifyCode(args) {
-	return instance.post("auth/confirm-verify-code", args).then((res) => {
+	return instance.post("/auth/confirm-verify-code", args).then((res) => {
 		setAccessToken(res.data?.token?.access);
 		setRefreshToken(res.data?.token?.refresh_token);
 		setCookie("auth_status", JSON.stringify(res.data?.auth_status));
@@ -11,7 +11,7 @@ export function verifyCode(args) {
 }
 
 export function updateUserAuth(args) {
-	return instance.put("auth/update-user-auth", args).then((res) => {
+	return instance.put("/auth/update-user-auth", args).then((res) => {
 		setUserData(res.data?.user)
 		setCookie("auth_status", JSON.stringify(res.data?.auth_status));
 	})

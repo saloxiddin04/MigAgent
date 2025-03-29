@@ -3,8 +3,13 @@ import {Swiper, SwiperSlide} from "swiper/react";
 import {Autoplay} from "swiper/modules";
 import image from "../../assets/image.png";
 import image1 from "../../assets/image1.png";
+import {useNavigate} from "react-router-dom";
+import {getUserData} from "../../auth/jwtService.js";
+import {toast} from "react-toastify";
 
 const Main = () => {
+	const navigate = useNavigate()
+	
 	return (
 		<main className="bg-[rgb(248,249,250)]">
 			<div className="container mx-auto pt-36">
@@ -43,7 +48,18 @@ const Main = () => {
 					</SwiperSlide>
 				</Swiper>
 				<div className="w-full text-center py-20">
-					<button className="btn btn-primary">Test boshlash</button>
+					<button
+						className="btn btn-primary"
+						onClick={() => {
+							if (getUserData()) {
+								navigate("/test")
+							} else {
+								toast.error("Avval ro'yhatdan o'tishingiz kerak")
+							}
+						}}
+					>
+						Test boshlash
+					</button>
 				</div>
 			</div>
 		</main>
