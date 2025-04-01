@@ -14,36 +14,28 @@ const instance = axios.create({
 
 instance.interceptors.request.use(
 	(config) => {
-		let token = getAccessToken()
+		const token = getAccessToken();
 		if (token && config.headers) {
-			config.headers.Authorization = "Bearer " + token;
+			config.headers.Authorization = `Bearer ${token}`;
 		}
-		
 		return config;
 	},
-	(error) => {
-		return Promise.reject(error)
-	}
-)
+	(error) => Promise.reject(error)
+);
 
-instance.interceptors.request.use(
+instance.interceptors.response.use(
 	(response) => response,
 	(error) => {
-		console.log(error.response.status)
-		if (error.response && error.response.status === 401) {
-			window.location.href = "/";
-			logout()
-			if (
-				window.location.pathname !== "/login" &&
-				window.location.pathname !== "/register"
-			) {
-				window.location.href = "/";
-				logout()
+		if (error.response) {
+			if (error.response.status === 401) {
+				logout();
+				if (window.location.pathname !== "/login") {
+					window.location.href = "/";
+				}
 			}
 		}
-		
-		return Promise.reject(error)
+		return Promise.reject(error);
 	}
-)
+);
 
 export default instance

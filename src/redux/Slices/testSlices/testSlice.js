@@ -4,6 +4,7 @@ import instance from "../../../plugins/axios.js";
 const initialState = {
 	categories: null,
 	questions: null,
+	answers: null,
 	loading: false
 }
 
@@ -24,6 +25,18 @@ export const getTestsByVariant = createAsyncThunk(
 	async (params) => {
 		try {
 			const response = await instance.get(`/assessments/get-questions/${params}`)
+			return response.data
+		} catch (e) {
+			return e;
+		}
+	}
+)
+
+export const submitTest = createAsyncThunk(
+	"test/submitTest",
+	async (data) => {
+		try {
+			const response = await instance.post("/assessments/question-answer", data)
 			return response.data
 		} catch (e) {
 			return e;
@@ -65,6 +78,20 @@ const testSlice = createSlice({
 			})
 			.addCase(getTestsByVariant.rejected, (state) => {
 				state.questions = null
+				state.loading = false
+			})
+		
+		// submitTest
+		builder
+			.addCase(submitTest.pending, (state) => {
+				state.loading = true
+			})
+			.addCase(submitTest.fulfilled, (state, {payload}) => {
+				state.answers = payload
+				state.loading = false
+			})
+			.addCase(submitTest.rejected, (state) => {
+				state.answers = null
 				state.loading = false
 			})
 	}
