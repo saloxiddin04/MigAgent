@@ -15,9 +15,7 @@ const App = () => {
 	const navigate = useNavigate()
 	
 	useEffect(() => {
-		if (!getUserData() &&
-			pathname !== "/login"
-		) {
+		if (!getUserData() && (pathname !== "/login" || pathname !== "/profile")) {
 			navigate("/");
 		}
 	}, [navigate, pathname]);
