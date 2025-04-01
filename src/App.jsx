@@ -7,18 +7,18 @@ import Profile from "./pages/Auth/Profile.jsx";
 import Navbar from "./components/Navbar.jsx";
 import Footer from "./components/Footer.jsx";
 import Test from "./pages/Test/Test.jsx";
-import {getUserData} from "./auth/jwtService.js";
+// import {getUserData} from "./auth/jwtService.js";
 
 const App = () => {
 	
 	const {pathname} = useLocation()
-	const navigate = useNavigate()
+	// const navigate = useNavigate()
 	
-	useEffect(() => {
-		if (!getUserData() && (pathname !== "/login" || pathname !== "/profile")) {
-			navigate("/");
-		}
-	}, [navigate, pathname]);
+	// useEffect(() => {
+	// 	if (!getUserData() && (pathname !== "/login" || pathname !== "/profile")) {
+	// 		navigate("/");
+	// 	}
+	// }, [navigate, pathname]);
 	
 	return (
 		<>
