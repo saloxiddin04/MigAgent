@@ -198,7 +198,7 @@ const Test = () => {
 										<div className="w-full mt-8 text-center">
 											<button
 												onClick={handleSubmitTest}
-												disabled={Object.keys(userAnswers).length === 0 || loading}
+												disabled={Object.keys(userAnswers).length !== questions?.length || loading}
 												className="btn btn-primary disabled:opacity-25 disabled:pointer-events-none"
 											>
 												{loading ? "Tekshirilmoqda..." : "Javoblarni tekshirish ( Проверить ответы )"}
