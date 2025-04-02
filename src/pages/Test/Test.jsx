@@ -49,25 +49,25 @@ const Test = () => {
 				return "Unknown Type";
 		}
 	};
-	
+
 	const handleAnswerSelection = (questionId, answerId, answerText) => {
 		setUserAnswers(prev => ({
 			...prev,
-			[questionId]: answerId || answerText,
+			[questionId]: answerId ? { answer: answerId } : { answer_text: answerText },
 		}));
 	};
-	
+
 	const handleSubmitTest = () => {
 		dispatch(submitTest({
-			answers: Object.entries(userAnswers).map(([question, answer]) => ({
+			answers: Object.entries(userAnswers).map(([question, answerObj]) => ({
 				question,
-				answer,
+				...answerObj,
 			})),
 			variant: selectedVariant,
 		})).then(({payload}) => {
-			setSubmissionResult(payload)
-		})
-	}
+			setSubmissionResult(payload);
+		});
+	};
 
 	const groupedQuestions = (questions || []).reduce((acc, question) => {
 		const type = question?.question_type;
@@ -172,14 +172,20 @@ const Test = () => {
 														<p className="font-medium italic text-gray-600">{test?.question_text}</p>
 
 														{test?.question_type === 2 && (
-															<input type="text" placeholder="Введите ответ" className="w-full border border-gray-300 py-2 px-2 rounded focus:outline-none focus:border-[#067BBE] my-2"/>
+															<input
+																type="text"
+																placeholder="Введите ответ"
+																className="w-full border border-gray-300 py-2 px-2 rounded focus:outline-none focus:border-[#067BBE] my-2"
+																value={userAnswers[test.id]?.answer_text || ''}
+																onChange={(e) => handleAnswerSelection(test.id, null, e.target.value)}
+															/>
 														)}
 
 														<div className="flex flex-wrap gap-2 mt-2 w-full">
 															{test?.answers?.map((answer) => {
 																const result = submissionResult?.data?.answers?.find((res) => res.question === test.id);
 																const isCorrect = result?.correct_answer?.id === answer.id;
-																const isSelected = userAnswers[test.id] === answer.id;
+																const isSelected = userAnswers[test.id]?.answer === answer.id;
 																const isIncorrect = result && (isSelected && !isCorrect);
 
 																if (renderQuestionType(test?.question_type) !== "Письмо") {
