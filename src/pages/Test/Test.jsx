@@ -114,7 +114,7 @@ const Test = () => {
 					
 					{selectedCategory && (
 						<div className="mt-4">
-							<ul className="mt-2 flex items-center flex-wrap gap-2">
+							<ul className="mt-2 flex justify-center items-center flex-wrap gap-5">
 								{categories
 									.find((cat) => cat.id === selectedCategory)
 									?.variant.map((variant) => (
