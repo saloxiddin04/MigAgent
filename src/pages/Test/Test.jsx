@@ -13,6 +13,8 @@ const Test = () => {
 	
 	const [userAnswers, setUserAnswers] = useState({});
 	const [submissionResult, setSubmissionResult] = useState(null);
+
+	console.log("hi")
 	
 	useEffect(() => {
 		dispatch(getCategories())
