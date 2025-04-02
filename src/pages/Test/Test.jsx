@@ -87,8 +87,6 @@ const Test = () => {
 
   let questionIndex = 0;
 
-	console.log(submissionResult)
-
   return (
     <>
       <div className="container mx-auto py-10 pt-36">
