@@ -1,6 +1,6 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {ToastContainer} from "react-toastify";
-import {Route, Routes, useLocation, useNavigate} from "react-router-dom";
+import {Route, Routes, useLocation} from "react-router-dom";
 import Main from "./pages/Main/Main.jsx";
 import Login from "./pages/Auth/Login.jsx";
 import Profile from "./pages/Auth/Profile.jsx";
@@ -10,37 +10,59 @@ import Test from "./pages/Test/Test.jsx";
 // import {getUserData} from "./auth/jwtService.js";
 
 const App = () => {
-	
-	const {pathname} = useLocation()
-	// const navigate = useNavigate()
-	
-	// useEffect(() => {
-	// 	if (!getUserData() && (pathname !== "/login" || pathname !== "/profile")) {
-	// 		navigate("/");
-	// 	}
-	// }, [navigate, pathname]);
-	
-	return (
-		<>
-			{pathname !== "/login" && <Navbar/>}
-			
-			<Routes>
-				<Route path="/" element={<Main/>} />
-				<Route path="/login" element={<Login/>} />
-				<Route path="/profile" element={<Profile/>} />
-				<Route path="/test" element={<Test/>} />
-			</Routes>
-			
-			{pathname !== "/login" && <Footer/>}
-			
-			<ToastContainer
-				autoClose={2000}
-				hideProgressBar={true}
-				theme="colored"
-				position="bottom-left"
-			/>
-		</>
-	);
+
+  const {pathname} = useLocation()
+  // const navigate = useNavigate()
+
+  // useEffect(() => {
+  // 	if (!getUserData() && (pathname !== "/login" || pathname !== "/profile")) {
+  // 		navigate("/");
+  // 	}
+  // }, [navigate, pathname]);
+
+  return (
+    <>
+      {/*{pathname !== "/login" && <Navbar/>}*/}
+
+      {/*<Routes>*/}
+      {/*	<Route path="/" element={<Main/>} />*/}
+      {/*	<Route path="/login" element={<Login/>} />*/}
+      {/*	<Route path="/profile" element={<Profile/>} />*/}
+      {/*	<Route path="/test" element={<Test/>} />*/}
+      {/*</Routes>*/}
+
+      {/*{pathname !== "/login" && <Footer/>}*/}
+
+      {/*<ToastContainer*/}
+      {/*	autoClose={2000}*/}
+      {/*	hideProgressBar={true}*/}
+      {/*	theme="colored"*/}
+      {/*	position="bottom-left"*/}
+      {/*/>*/}
+
+      <div className="app-container">
+        {pathname !== "/login" && <Navbar/>}
+
+        <div className="content">
+          <Routes>
+            <Route path="/" element={<Main/>}/>
+            <Route path="/login" element={<Login/>}/>
+            <Route path="/profile" element={<Profile/>}/>
+            <Route path="/test" element={<Test/>}/>
+          </Routes>
+        </div>
+
+        {pathname !== "/login" && <Footer/>}
+
+        <ToastContainer
+          autoClose={2000}
+          hideProgressBar={true}
+          theme="colored"
+          position="bottom-left"
+        />
+      </div>
+    </>
+  );
 };
 
 export default App;

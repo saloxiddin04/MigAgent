@@ -26,9 +26,6 @@ const Navbar = () => {
 									{getUserData() && (
 										<div className="text-end mr-2 flex gap-3">
 											<div>
-			                  <span className="block text-xs sm:text-sm font-medium">
-			                    Ismingiz:
-			                  </span>
 												<span className="block text-lg font-medium text-gray-500">
 	                        {getUserData().first_name}
                         </span>{" "}

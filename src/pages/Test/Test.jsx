@@ -18,14 +18,14 @@ const Test = () => {
 		dispatch(getCategories())
 	}, [dispatch])
 	
-	// useEffect(() => {
-	// 	dispatch(getCategories()).then(({payload}) => {
-	// 		if (!selectedCategory || !selectedVariant) {
-	// 			setSelectedCategory(payload[0]?.id)
-	// 			setSelectedVariant(payload[0]?.variant[0]?.id)
-	// 		}
-	// 	})
-	// }, [dispatch, selectedVariant, selectedCategory])
+	useEffect(() => {
+		dispatch(getCategories()).then(({payload}) => {
+			if (!selectedCategory || !selectedVariant) {
+				setSelectedCategory(payload[0]?.id)
+				setSelectedVariant(payload[0]?.variant[0]?.id)
+			}
+		})
+	}, [dispatch])
 	
 	useEffect(() => {
 		if (selectedVariant) {
@@ -68,10 +68,27 @@ const Test = () => {
 			setSubmissionResult(payload)
 		})
 	}
-	
+
+	const groupedQuestions = (questions || []).reduce((acc, question) => {
+		const type = question?.question_type;
+		if (!acc[type]) acc[type] = [];
+		acc[type].push(question);
+		return acc;
+	}, {});
+
+	const questionTypes = {
+		0: "Аудирование",
+		1: "Чтение",
+		2: "Письмо",
+		3: "Лексика и грамматика",
+		4: "ИСТОРИЯ РОССИИ",
+	};
+
+	let questionIndex = 0;
+
 	return (
 		<>
-			<div className="container mx-auto py-36">
+			<div className="container mx-auto py-10 pt-36">
 				<div>
 					<div className="flex space-x-4 border-b pb-2">
 						{categories?.map((category) => (
@@ -97,7 +114,7 @@ const Test = () => {
 					
 					{selectedCategory && (
 						<div className="mt-4">
-							<ul className="mt-2 flex justify-between items-center flex-wrap gap-2">
+							<ul className="mt-2 flex items-center flex-wrap gap-2">
 								{categories
 									.find((cat) => cat.id === selectedCategory)
 									?.variant.map((variant) => (
@@ -125,86 +142,108 @@ const Test = () => {
 								<p className="text-center text-gray-500">Loading...</p>
 							) : (
 								<>
-									<ul className="mt-2 w-full flex justify-between items-stretch flex-wrap">
-										{questions?.map((test, index) => {
-											return (
-												<li
-													key={test?.id}
-													className="mt-4 p-4 border border-gray-300 rounded-lg shadow md:w-[49%] w-full min-h-[200px] flex justify-between flex-col py-4"
-												>
-													<h2 className="text-3xl mb-2 font-semibold text-gray-500">
-														Задание {index + 1}
-													</h2>
-													<h2 className="text-xl mb-2 font-semibold">
-														{renderQuestionType(test?.question_type)}
-													</h2>
-													{test?.question_type === 0 && (
-														<audio controls className="w-full my-3">
-															<source
-																src={`${test?.file}`}
-																type="audio/mpeg"
-															/>
-															Ваш браузер не поддерживает аудио элемент.
-														</audio>
-													)}
-													<p className="font-medium">{test?.question_text}</p>
-													<div className="flex flex-wrap gap-2 mt-2 w-full">
-														{test?.answers?.map((answer) => {
-															const result = submissionResult?.data?.answers?.find((res) => res.question === test.id);
-															const isCorrect = result?.correct_answer?.id === answer.id;
-															const isSelected = userAnswers[test.id] === answer.id;
-															const isIncorrect = result && (isSelected && !isCorrect);
-															
-															if (renderQuestionType(test?.question_type) !== "Письмо") {
-																return (
-																	<React.Fragment key={answer?.id}>
-																		<button
-																			key={answer?.id}
-																			className={`w-full py-2 border transition rounded text-gray-500
+									{Object.keys(groupedQuestions)?.map((type) => (
+										<div key={type} className="my-6">
+											<h2 className="text-3xl font-bold text-gray-500 mt-4">
+												{questionTypes[type]}
+											</h2>
+
+											<ul className="mt-2 w-full flex justify-between items-stretch flex-wrap">
+												{groupedQuestions[type]?.map((test) => (
+													<li
+														key={test?.id}
+														className="mt-4 p-4 border border-gray-300 rounded-lg shadow md:w-[49%] w-full min-h-[200px] flex justify-between flex-col py-4"
+													>
+														<h2 className="text-3xl mb-2 font-semibold text-black">
+															Задание {++questionIndex}
+														</h2>
+
+														<p className="font-medium italic py-3 text-xl text-gray-600">
+															{test?.description}
+														</p>
+
+														{test?.question_type === 0 && (
+															<audio controls className="w-full my-3">
+																<source src={`${test?.file}`} type="audio/mpeg"/>
+																Ваш браузер не поддерживает аудио элемент.
+															</audio>
+														)}
+
+														<p className="font-medium italic text-gray-600">{test?.question_text}</p>
+
+														{test?.question_type === 2 && (
+															<input type="text" placeholder="Введите ответ" className="w-full border border-gray-300 py-2 px-2 rounded focus:outline-none focus:border-[#067BBE] my-2"/>
+														)}
+
+														<div className="flex flex-wrap gap-2 mt-2 w-full">
+															{test?.answers?.map((answer) => {
+																const result = submissionResult?.data?.answers?.find((res) => res.question === test.id);
+																const isCorrect = result?.correct_answer?.id === answer.id;
+																const isSelected = userAnswers[test.id] === answer.id;
+																const isIncorrect = result && (isSelected && !isCorrect);
+
+																if (renderQuestionType(test?.question_type) !== "Письмо") {
+																	return (
+																		<React.Fragment key={answer?.id}>
+																			<button
+																				key={answer?.id}
+																				className={`w-full py-2 border transition rounded text-gray-500
                                         ${isCorrect ? "bg-green-500 border-green-400 text-white" :
-																				isIncorrect ? "bg-red-400 border-red-400 text-white" :
-																					isSelected ? "bg-[#067BBE] text-white" : "border-gray-400 text-gray-500 hover:bg-gray-200"}`
-																			}
-																			// className="w-full py-2 border border-gray-500 text-gray-500 hover:bg-gray-500 hover:text-white transition rounded"
-																			onClick={() => handleAnswerSelection(test?.id, answer?.id, answer?.answer_text)}
-																		>
-																			{answer?.answer_text}
-																			{answer?.file && (
-																				answer?.file_type === 1 ? (
-																					answer?.file && (
-																						<img src={`${api_url}${answer?.file}`} alt="Question"
-																						     className="mt-2 w-full max-h-14 object-contain"/>
+																					isIncorrect ? "bg-red-400 border-red-400 text-white" :
+																						isSelected ? "bg-[#067BBE] text-white" : "border-gray-400 text-gray-500 hover:bg-gray-400 hover:text-white"}`
+																				}
+																				// className="w-full py-2 border border-gray-500 text-gray-500 hover:bg-gray-500 hover:text-white transition rounded"
+																				onClick={() => handleAnswerSelection(test?.id, answer?.id, answer?.answer_text)}
+																			>
+																				{answer?.answer_text}
+																				{answer?.file && (
+																					answer?.file_type === 1 ? (
+																						answer?.file && (
+																							<img src={`${api_url}${answer?.file}`} alt="Question"
+																									 className="mt-2 w-full max-h-14 object-contain"
+																							/>
+																						)
+																					) : (
+																						<audio controls className="w-full my-3">
+																							<source
+																								src={`${test?.file}`}
+																								type="audio/mpeg"
+																							/>
+																							Ваш браузер не поддерживает аудио элемент.
+																						</audio>
 																					)
-																				) : (
-																					<audio controls className="w-full my-3">
-																						<source
-																							src={`${test?.file}`}
-																							type="audio/mpeg"
-																						/>
-																						Ваш браузер не поддерживает аудио элемент.
-																					</audio>
-																				)
-																			)}
-																		</button>
-																	</React.Fragment>
-																)
-															}
-														})}
-													</div>
-												</li>
-											)
-										})}
-										
+																				)}
+																			</button>
+																		</React.Fragment>
+																	)
+																}
+															})}
+														</div>
+													</li>
+												))}
+											</ul>
+										</div>
+									))}
+
+									<div className="w-full mt-8 text-center">
+										<button
+											onClick={handleSubmitTest}
+											disabled={questions && (Object.keys(userAnswers).length !== questions?.length) || loading}
+											className="btn btn-primary disabled:opacity-25 disabled:pointer-events-none"
+										>
+											{loading ? "Tekshirilmoqda..." : "Javoblarni tekshirish (Проверить ответы)"}
+										</button>
+									</div>
+
+									{submissionResult && (
 										<div className="w-full mt-8 text-center">
 											<button
-												onClick={handleSubmitTest}
-												disabled={Object.keys(userAnswers).length !== questions?.length || loading}
-												className="btn btn-primary disabled:opacity-25 disabled:pointer-events-none"
+												className="text-green-400"
 											>
-												{loading ? "Tekshirilmoqda..." : "Javoblarni tekshirish ( Проверить ответы )"}
+												To'g'ri javoblar soni: {submissionResult?.correct_answers_count}
 											</button>
 										</div>
-									</ul>
+									)}
 								</>
 							)}
 						</div>

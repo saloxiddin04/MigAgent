@@ -11,7 +11,7 @@ const Main = () => {
 	const navigate = useNavigate()
 	
 	return (
-		<main className="bg-[rgb(248,249,250)]">
+		<main className="bg-[rgb(248,249,250)] h-full">
 			<div className="container mx-auto pt-36">
 				<Swiper
 					className={"mySwiper w-full"}
@@ -54,7 +54,7 @@ const Main = () => {
 							if (getUserData()) {
 								navigate("/test")
 							} else {
-								toast.error("Avval ro'yhatdan o'tishingiz kerak")
+								toast.error("Avval tizimga kirishingiz kerak")
 							}
 						}}
 					>
