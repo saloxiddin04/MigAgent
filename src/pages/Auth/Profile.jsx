@@ -128,7 +128,7 @@ const Profile = () => {
 									name="country"
 									id="country"
 									className="form-input"
-									disabled={JSON.parse(getCookie("auth_status") || "null") === "done"}
+									// disabled={JSON.parse(getCookie("auth_status") || "null") === "done"}
 									// required
 								>
 									<option value="">Tanlang...</option>
@@ -150,7 +150,7 @@ const Profile = () => {
 									name="country"
 									id="country"
 									className="form-input"
-									disabled={JSON.parse(getCookie("auth_status") || "null") === "done"}
+									// disabled={JSON.parse(getCookie("auth_status") || "null") === "done"}
 									// required
 								>
 									<option value="">Tanlang...</option>
@@ -173,7 +173,7 @@ const Profile = () => {
 									name="country"
 									id="country"
 									className="form-input"
-									disabled={JSON.parse(getCookie("auth_status") || "null") === "done"}
+									// disabled={JSON.parse(getCookie("auth_status") || "null") === "done"}
 									// required
 								>
 									<option value="">Tanlang...</option>
@@ -198,7 +198,7 @@ const Profile = () => {
 									name="phone_number"
 									placeholder="Manzil kiritish"
 									className="form-input"
-									disabled={JSON.parse(getCookie("auth_status") || "null") === "done"}
+									// disabled={JSON.parse(getCookie("auth_status") || "null") === "done"}
 									// value={user.name}
 									// onChange={(e) => setUser({...user, name: e.target.value})}
 								/>
@@ -220,7 +220,7 @@ const Profile = () => {
 										className="w-4 h-4 rounded-md text-blue-600 bg-gray-100 border-gray-200 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-1 dark:bg-gray-700 dark:border-gray-600"
 										checked={work_abroad_status === 0}
 										onChange={() => setWorkAbroadStatus(0)}
-										disabled={JSON.parse(getCookie("auth_status") || "null") === "done"}
+										// disabled={JSON.parse(getCookie("auth_status") || "null") === "done"}
 									/>
 									<label
 										htmlFor="work_abroad_status0"
@@ -236,7 +236,7 @@ const Profile = () => {
 										className="w-4 h-4 rounded-md text-blue-600 bg-gray-100 border-gray-200 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-1 dark:bg-gray-700 dark:border-gray-600"
 										checked={work_abroad_status === 1}
 										onChange={() => setWorkAbroadStatus(1)}
-										disabled={JSON.parse(getCookie("auth_status") || "null") === "done"}
+										// disabled={JSON.parse(getCookie("auth_status") || "null") === "done"}
 									/>
 									<label
 										htmlFor="work_abroad_status1"
@@ -252,7 +252,7 @@ const Profile = () => {
 										className="w-4 h-4 rounded-md text-blue-600 bg-gray-100 border-gray-200 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-1 dark:bg-gray-700 dark:border-gray-600"
 										checked={work_abroad_status === 2}
 										onChange={() => setWorkAbroadStatus(2)}
-										disabled={JSON.parse(getCookie("auth_status") || "null") === "done"}
+										// disabled={JSON.parse(getCookie("auth_status") || "null") === "done"}
 									/>
 									<label
 										htmlFor="work_abroad_status2"
@@ -279,7 +279,7 @@ const Profile = () => {
 										className="w-4 h-4 rounded-md text-blue-600 bg-gray-100 border-gray-200 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-1 dark:bg-gray-700 dark:border-gray-600"
 										checked={platform_usage === 0}
 										onChange={() => setPlatformUsage(0)}
-										disabled={JSON.parse(getCookie("auth_status") || "null") === "done"}
+										// disabled={JSON.parse(getCookie("auth_status") || "null") === "done"}
 									/>
 									<label
 										htmlFor="platform_usage0"
@@ -295,7 +295,7 @@ const Profile = () => {
 										className="w-4 h-4 rounded-md text-blue-600 bg-gray-100 border-gray-200 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-1 dark:bg-gray-700 dark:border-gray-600"
 										checked={platform_usage === 1}
 										onChange={() => setPlatformUsage(1)}
-										disabled={JSON.parse(getCookie("auth_status") || "null") === "done"}
+										// disabled={JSON.parse(getCookie("auth_status") || "null") === "done"}
 									/>
 									<label
 										htmlFor="platform_usage1"
