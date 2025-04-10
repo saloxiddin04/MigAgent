@@ -9,6 +9,8 @@ import {toast} from "react-toastify";
 
 const Main = () => {
 	const navigate = useNavigate()
+
+	console.log("hi")
 	
 	return (
 		<main className="bg-[rgb(248,249,250)] h-full">
