@@ -16,7 +16,7 @@ const Profile = () => {
 	const [work_abroad_status, setWorkAbroadStatus] = useState(null)
 	
 	useEffect(() => {
-		if (JSON.parse(getCookie("auth_status") || "null") === "done") {
+		if (JSON.parse(getCookie("auth_status") || "{}") === "done") {
 			setFirstName(getUserData()?.first_name)
 			setLastNane(getUserData()?.last_name)
 			setMidName(getUserData()?.mid_name)
@@ -25,7 +25,7 @@ const Profile = () => {
 	
 	const updateAuthUser = (e) => {
 		e.preventDefault();
-		if (JSON.parse(getCookie("auth_status") || "null") === "done") {
+		if (JSON.parse(getCookie("auth_status") || "{}") === "done") {
 			dispatch(updateUser({first_name, last_name, mid_name}))?.then(() => {
 				toast.success("Muvofaqqiyatli yangilandi!")
 				dispatch(getUserDetail())

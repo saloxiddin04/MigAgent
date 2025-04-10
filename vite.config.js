@@ -29,6 +29,7 @@ export default defineConfig({
     // port: process.env.VITE_PORT ? Number(process.env.VITE_PORT) : 5173, // `.env` dagi port yoki default 5173
     port: 3007, // 5173 o'rniga 3007 port
     host: true,  // Docker orqali tashqi ulanish uchun
+    // allowedHosts: true // Tashqi domenni qo'shish
     allowedHosts: ['xorijdaish.asilbro.uz', 'dcid.unicon.uz'] // Tashqi domenni qo'shish
   }
 })
