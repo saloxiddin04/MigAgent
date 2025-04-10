@@ -26,7 +26,7 @@ const Profile = () => {
 	const updateAuthUser = (e) => {
 		e.preventDefault();
 		if (JSON.parse(getCookie("auth_status") || "null") === "done") {
-			dispatch(updateUser({first_name, last_name, mid_name})).then(() => {
+			dispatch(updateUser({first_name, last_name, mid_name}))?.then(() => {
 				toast.success("Muvofaqqiyatli yangilandi!")
 				dispatch(getUserDetail())
 			})
@@ -37,7 +37,7 @@ const Profile = () => {
 					navigate("/")
 				})
 				.catch((err) => {
-					toast.error(err.response.data.error || err.message);
+					toast.error(err?.response?.data?.error || err?.message);
 				});
 		}
 	};

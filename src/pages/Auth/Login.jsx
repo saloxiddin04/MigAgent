@@ -18,7 +18,7 @@ const Login = () => {
 		verifyCode({code})
 			.then((res) => {
 				if (res?.data?.auth_status === "done") {
-					dispatch(getUserDetail()).then(() => {
+					dispatch(getUserDetail())?.then(() => {
 						navigate("/")
 						toast.success("Successfully logged");
 					})
@@ -28,7 +28,7 @@ const Login = () => {
 				}
 			})
 			.catch((err) => {
-				toast.error(err.response.data.error || err.message);
+				toast.error(err?.response?.data?.error || err?.message);
 			});
 	};
 	
