@@ -15,20 +15,23 @@ const Login = () => {
 	
 	const registerUser = (e) => {
 		e.preventDefault();
-		verifyCode({code})
-			.then((res) => {
+		verifyCode({code})?.then((res) => {
+			toast.error(JSON.stringify(`res ${JSON.stringify(res)}`))
 				if (res?.data?.auth_status === "done") {
 					dispatch(getUserDetail())?.then(() => {
 						navigate("/")
+						toast.error(JSON.stringify(`if ${JSON.stringify(res?.data)}`))
 						toast.success("Successfully logged");
 					})
 				} else {
 					toast.success("Successfully registered");
+					toast.error(JSON.stringify(`else ${JSON.stringify(res?.data)}`))
 					navigate("/profile")
 				}
 			})
 			.catch((err) => {
 				toast.error(err?.response?.data?.error || err?.message);
+				toast.error(JSON.stringify(`catch ${JSON.stringify(err)}`))
 			});
 	};
 	
