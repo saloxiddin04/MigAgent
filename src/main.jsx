@@ -8,18 +8,18 @@ import { Provider } from "react-redux";
 import { store } from "./redux/store.js";
 import { BrowserRouter } from "react-router-dom";
 
-document.addEventListener("contextmenu", (e) => e.preventDefault());
-
-document.addEventListener("keydown", (e) => {
-	if (
-		e.key === "F12" ||
-		(e.ctrlKey &&
-			e.shiftKey &&
-			(e.key === "I" || e.key === "J" || e.key === "C"))
-	) {
-		e.preventDefault();
-	}
-});
+// document.addEventListener("contextmenu", (e) => e.preventDefault());
+//
+// document.addEventListener("keydown", (e) => {
+// 	if (
+// 		e.key === "F12" ||
+// 		(e.ctrlKey &&
+// 			e.shiftKey &&
+// 			(e.key === "I" || e.key === "J" || e.key === "C"))
+// 	) {
+// 		e.preventDefault();
+// 	}
+// });
 
 createRoot(document.getElementById("root")).render(
 	<Provider store={store}>

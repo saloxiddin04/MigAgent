@@ -2,11 +2,12 @@ import React from 'react';
 import {ToastContainer} from "react-toastify";
 import {Route, Routes, useLocation} from "react-router-dom";
 import Main from "./pages/Main/Main.jsx";
-import Login from "./pages/Auth/Login.jsx";
 import Profile from "./pages/Auth/Profile.jsx";
 import Navbar from "./components/Navbar.jsx";
 import Footer from "./components/Footer.jsx";
 import Test from "./pages/Test/Test.jsx";
+import Register from "./pages/Auth/Register.jsx";
+import Login from "./pages/Auth/Login.jsx";
 // import {getUserData} from "./auth/jwtService.js";
 
 const App = () => {
@@ -41,18 +42,19 @@ const App = () => {
       {/*/>*/}
 
       <div className="app-container">
-        {pathname !== "/login" && <Navbar/>}
+        {pathname !== "/login" && pathname !== "/register" && <Navbar/>}
 
         <div className="content">
           <Routes>
             <Route path="/" element={<Main/>}/>
+            <Route path="/register" element={<Register/>}/>
             <Route path="/login" element={<Login/>}/>
             <Route path="/profile" element={<Profile/>}/>
             <Route path="/test" element={<Test/>}/>
           </Routes>
         </div>
 
-        {pathname !== "/login" && <Footer/>}
+        {pathname !== "/login" && pathname !== "/register" && <Footer/>}
 
         <ToastContainer
           autoClose={2000}
