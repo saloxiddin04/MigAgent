@@ -8,6 +8,7 @@ import Footer from "./components/Footer.jsx";
 import Test from "./pages/Test/Test.jsx";
 import Register from "./pages/Auth/Register.jsx";
 import Login from "./pages/Auth/Login.jsx";
+import Forgot from "./pages/Auth/Forgot.jsx";
 // import {getUserData} from "./auth/jwtService.js";
 
 const App = () => {
@@ -42,19 +43,20 @@ const App = () => {
       {/*/>*/}
 
       <div className="app-container">
-        {pathname !== "/login" && pathname !== "/register" && <Navbar/>}
+        {pathname !== "/login" && pathname !== "/register" && pathname !== "/forgot" && <Navbar/>}
 
         <div className="content">
           <Routes>
             <Route path="/" element={<Main/>}/>
             <Route path="/register" element={<Register/>}/>
+            <Route path="/forgot" element={<Forgot/>}/>
             <Route path="/login" element={<Login/>}/>
             <Route path="/profile" element={<Profile/>}/>
             <Route path="/test" element={<Test/>}/>
           </Routes>
         </div>
 
-        {pathname !== "/login" && pathname !== "/register" && <Footer/>}
+        {pathname !== "/login" && pathname !== "/register" && pathname !== "/forgot" && <Footer/>}
 
         <ToastContainer
           autoClose={2000}

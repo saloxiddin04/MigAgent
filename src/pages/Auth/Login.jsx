@@ -78,7 +78,7 @@ const Login = () => {
             </div>
             <div className="my-4 text-end">
               <p>
-                <span className="text-[#3b82f6] cursor-pointer font-bold">Login yoki parol</span> yodingizdan chiqdimi?
+                <span onClick={() => navigate("/register", {state: {forgot: true}})} className="text-[#3b82f6] cursor-pointer font-bold">Login yoki parol</span> yodingizdan chiqdimi?
               </p>
             </div>
             <div className="my-4">

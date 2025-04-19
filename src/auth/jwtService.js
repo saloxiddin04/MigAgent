@@ -27,6 +27,12 @@ export function updateUserAuth(args) {
 	})
 }
 
+export function resetPassword(args) {
+	return instance.post("/auth/reset-password", args)?.then((res) => {
+		return res?.data;
+	})
+}
+
 export function logout() {
 	document.cookie = "access=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 	document.cookie = "refresh=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";

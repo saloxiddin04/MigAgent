@@ -131,7 +131,7 @@ const Profile = () => {
 							<div className="my-4 lg:w-[49%] w-full">
 								<div className="flex justify-between">
 									<label
-										htmlFor="password"
+										htmlFor="re_password"
 										className="text-sm text-blue-400 ml-4 mb-1"
 									>
 										Parol tasdiqlash
@@ -141,10 +141,10 @@ const Profile = () => {
 								<div
 									className="flex items-center gap-2 border w-full py-[10px] px-[25px] border-[#3b82f6] rounded-[8px] focus-within:shadow-[5px_5px_5px_rgba(0,0,0,0.3)] transition">
 									<input
-										id="password"
+										id="re_password"
 										required={JSON.parse(getCookie("auth_status") || "{}") !== "done"}
 										type={visible ? "text" : "password"}
-										name="password"
+										name="re_password"
 										placeholder="Parol"
 										className="w-full outline-none"
 										value={re_password || ""}
