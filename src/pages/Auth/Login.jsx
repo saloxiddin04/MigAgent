@@ -1,5 +1,5 @@
 import React from "react";
-import {verifyCode} from "../../auth/jwtService";
+import {loginUser} from "../../auth/jwtService";
 import {useState} from "react";
 import {toast} from "react-toastify";
 import logo from "../../assets/logo_header.png"
@@ -16,22 +16,19 @@ const Login = () => {
 
   const [visible, setVisible] = useState(false)
 
-  const loginUser = (e) => {
+  const loginFunc = (e) => {
     e.preventDefault();
-    // verifyCode({code})?.then((res) => {
-    //   if (res?.data?.auth_status === "done") {
-    //     dispatch(getUserDetail())?.then(() => {
-    //       navigate("/")
-    //       toast.success("Successfully logged");
-    //     })
-    //   } else {
-    //     toast.success("Successfully registered");
-    //     navigate("/profile")
-    //   }
-    // })
-    //   .catch((err) => {
-    //     toast.error(err?.response?.data?.error || err?.message);
-    //   });
+    loginUser({login, password})?.then((res) => {
+      if (res?.data?.auth_status === "done") {
+        dispatch(getUserDetail())?.then(() => {
+          navigate("/")
+          toast.success("Successfully logged");
+        })
+      }
+    })
+      .catch((err) => {
+        toast.error(err?.response?.data?.error || err?.message);
+      });
   };
 
   return (
@@ -45,7 +42,7 @@ const Login = () => {
         </div>
 
         <div className="mt-8">
-          <form onSubmit={loginUser}>
+          <form onSubmit={loginFunc}>
             <div className="my-4">
               <input
                 id="login"
@@ -96,9 +93,14 @@ const Login = () => {
             </div>
           </form>
           <hr className="my-4 border border-gray-300 w-full h-[1px]"/>
-          <p className="text-center">
-            Tizimda profilingiz yo'qmi? <span onClick={() => navigate("/register")} className="text-[#3b82f6] cursor-pointer font-bold">Ro'yhatdan o'ting</span>
-          </p>
+          <div className="w-full flex justify-center">
+            <button
+              className="btn btn-primary"
+              onClick={() => navigate("/register")}
+            >
+              Ro'yhatdan o'ting
+            </button>
+          </div>
         </div>
       </div>
     </div>

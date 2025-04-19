@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
-import {getCookie, getUserData, updateUserAuth} from "../../auth/jwtService.js";
+import {getCookie, getUserData, setUserData, updateUserAuth} from "../../auth/jwtService.js";
 import {toast} from "react-toastify";
 import {useDispatch} from "react-redux";
 import {getUserDetail, updateUser} from "../../redux/Slices/userDetailSlice/userDetailSlice.js";
@@ -8,6 +8,12 @@ import {getUserDetail, updateUser} from "../../redux/Slices/userDetailSlice/user
 const Profile = () => {
 	const dispatch = useDispatch()
 	const navigate = useNavigate()
+	
+	const [visible, setVisible] = useState(false)
+	
+	const [login, setLogin] = useState(null)
+	const [password, setPassword] = useState(null)
+	const [re_password, setRePassword] = useState(null)
 	
 	const [first_name, setFirstName] = useState(null)
 	const [last_name, setLastNane] = useState(null)
@@ -20,18 +26,35 @@ const Profile = () => {
 			setFirstName(getUserData()?.first_name)
 			setLastNane(getUserData()?.last_name)
 			setMidName(getUserData()?.mid_name)
+			setLogin(getUserData()?.login)
+			setPlatformUsage(getUserData()?.platform_usage)
+			setWorkAbroadStatus(getUserData()?.work_abroad_status)
 		}
 	}, [])
 	
 	const updateAuthUser = (e) => {
 		e.preventDefault();
+		
+		if (password !== re_password) return toast.error("Parollar bir xil bo'lishi shart!")
+		
 		if (JSON.parse(getCookie("auth_status") || "{}") === "done") {
-			dispatch(updateUser({first_name, last_name, mid_name}))?.then(() => {
+			dispatch(updateUser({first_name, last_name, mid_name, login, password, re_password, platform_usage, work_abroad_status}))?.then(() => {
 				toast.success("Muvofaqqiyatli yangilandi!")
-				dispatch(getUserDetail())
+				dispatch(getUserDetail())?.then(({payload}) => {
+					setUserData(payload)
+				})
 			})
 		} else {
-			updateUserAuth({first_name, last_name, mid_name, platform_usage, work_abroad_status})
+			updateUserAuth({
+				first_name,
+				last_name,
+				mid_name,
+				platform_usage,
+				work_abroad_status,
+				login,
+				password,
+				re_password
+			})
 				.then(() => {
 					toast.success("Successfully");
 					navigate("/")
@@ -46,8 +69,99 @@ const Profile = () => {
 		<>
 			<div className="w-full min-h-screen flex items-center justify-center bg-[rgb(248,249,250)]">
 				<div className="w-3/4 lg:w-3/4 sm:w-3/4">
-					<div className="mt-16">
+					<div className="mt-36">
 						<form className="w-full flex justify-between flex-wrap" onSubmit={updateAuthUser}>
+							
+							<div className="my-4 lg:w-[49%] w-full">
+								<div className="flex justify-between">
+									<label
+										htmlFor="login"
+										className="text-sm text-blue-400 ml-4 mb-1"
+									>
+										Login
+									</label>
+								</div>
+								
+								<input
+									id="login"
+									required
+									type="text"
+									name="login"
+									placeholder="Login"
+									className="form-input"
+									value={login || ""}
+									onChange={(e) => setLogin(e.target.value?.toLowerCase()?.trim())}
+								/>
+							</div>
+							
+							<div className="my-4 lg:w-[49%] w-full">
+								<div className="flex justify-between">
+									<label
+										htmlFor="password"
+										className="text-sm text-blue-400 ml-4 mb-1"
+									>
+										Parol
+									</label>
+								</div>
+								
+								<div
+									className="flex items-center gap-2 border w-full py-[10px] px-[25px] border-[#3b82f6] rounded-[8px] focus-within:shadow-[5px_5px_5px_rgba(0,0,0,0.3)] transition">
+									<input
+										id="password"
+										required={JSON.parse(getCookie("auth_status") || "{}") !== "done"}
+										type={visible ? "text" : "password"}
+										name="password"
+										placeholder="Parol"
+										className="w-full outline-none"
+										value={password || ""}
+										onChange={(e) => setPassword(e.target.value?.trim())}
+									/>
+									<span onClick={() => setVisible(!visible)}>
+		                {
+			                visible
+				                ?
+				                <i className="fa fa-eye text-[#3b82f6]" aria-hidden="true"></i>
+				                :
+				                <i className="fa fa-eye-slash text-[#3b82f6]" aria-hidden="true"></i>
+		                }
+                  </span>
+								</div>
+							</div>
+							
+							<div className="my-4 lg:w-[49%] w-full">
+								<div className="flex justify-between">
+									<label
+										htmlFor="password"
+										className="text-sm text-blue-400 ml-4 mb-1"
+									>
+										Parol tasdiqlash
+									</label>
+								</div>
+								
+								<div
+									className="flex items-center gap-2 border w-full py-[10px] px-[25px] border-[#3b82f6] rounded-[8px] focus-within:shadow-[5px_5px_5px_rgba(0,0,0,0.3)] transition">
+									<input
+										id="password"
+										required={JSON.parse(getCookie("auth_status") || "{}") !== "done"}
+										type={visible ? "text" : "password"}
+										name="password"
+										placeholder="Parol"
+										className="w-full outline-none"
+										value={re_password || ""}
+										onChange={(e) => setRePassword(e.target.value?.trim())}
+									/>
+									<span onClick={() => setVisible(!visible)}>
+		                {
+			                visible
+				                ?
+				                <i className="fa fa-eye text-[#3b82f6]" aria-hidden="true"></i>
+				                :
+				                <i className="fa fa-eye-slash text-[#3b82f6]" aria-hidden="true"></i>
+		                }
+                  </span>
+								</div>
+							</div>
+							
 							<div className="my-4 lg:w-[49%] w-full">
 								<div className="flex justify-between">
 									<label

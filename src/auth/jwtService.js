@@ -10,6 +10,16 @@ export function verifyCode(args) {
 	})
 }
 
+export function loginUser(args) {
+	return instance.post("/auth/sign-in", args)?.then((res) => {
+		setAccessToken(res?.data?.token?.access)
+		setRefreshToken(res?.data?.token?.refresh_token);
+		setCookie("auth_status", JSON.stringify(res?.data?.auth_status));
+		setCookie("user_roles", JSON.stringify(res?.data?.user_roles));
+		return res;
+	})
+}
+
 export function updateUserAuth(args) {
 	return instance.put("/auth/update-user-auth", args)?.then((res) => {
 		setUserData(res?.data?.user)

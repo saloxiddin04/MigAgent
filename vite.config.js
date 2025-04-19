@@ -24,7 +24,7 @@ export default defineConfig({
     tailwindcss(),
     react()
   ],
-  logLevel: "debug",
+  // logLevel: "debug",
   server: {
     // port: process.env.VITE_PORT ? Number(process.env.VITE_PORT) : 5173, // `.env` dagi port yoki default 5173
     port: 3007, // 5173 o'rniga 3007 port
