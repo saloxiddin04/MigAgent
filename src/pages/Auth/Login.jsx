@@ -93,9 +93,10 @@ const Login = () => {
             </div>
           </form>
           <hr className="my-4 border border-gray-300 w-full h-[1px]"/>
-          <div className="w-full flex justify-center">
+          <div className="w-full text-center">
+            <p className="mb-4">Tizimda profilingiz yo'qmi?</p>
             <button
-              className="btn btn-primary"
+              className="btn btn-primary mx-auto"
               onClick={() => navigate("/register")}
             >
               Ro'yhatdan o'ting
