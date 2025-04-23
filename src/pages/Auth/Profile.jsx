@@ -40,9 +40,9 @@ const Profile = () => {
 			setLogin(getUserData()?.login)
 			setPlatformUsage(getUserData()?.platform_usage)
 			setWorkAbroadStatus(getUserData()?.work_abroad_status)
-			setCountry(getUserData()?.country)
-			setDistrict(getUserData()?.district)
-			setRegion(getUserData()?.region)
+			setCountry(getUserData()?.country?.id || getUserData()?.country)
+			setDistrict(getUserData()?.district?.id || getUserData()?.district)
+			setRegion(getUserData()?.region?.id || getUserData()?.region)
 		}
 
 		dispatch(getCountriesRegions())
@@ -89,6 +89,8 @@ const Profile = () => {
 				});
 		}
 	};
+	
+	console.log(countries?.find((el) => el?.id === country)?.regions)
 
 	return (
 		<>
@@ -119,29 +121,31 @@ const Profile = () => {
 								/>
 							</div>
 							
-							<div className="my-4 lg:w-[49%] w-full">
-								<div className="flex justify-between">
-									<label
-										htmlFor="password"
-										className="text-sm text-blue-400 ml-4 mb-1"
-									>
-										Parol
-									</label>
-								</div>
-								
-								<div
-									className="flex items-center gap-2 border w-full py-[10px] px-[25px] border-[#3b82f6] rounded-[8px] focus-within:shadow-[5px_5px_5px_rgba(0,0,0,0.3)] transition">
-									<input
-										id="password"
-										required={JSON.parse(getCookie("auth_status") || "{}") !== "done"}
-										type={visible ? "text" : "password"}
-										name="password"
-										placeholder="Parol"
-										className="w-full outline-none"
-										value={password || ""}
-										onChange={(e) => setPassword(e.target.value?.trim())}
-									/>
-									<span onClick={() => setVisible(!visible)}>
+							{JSON.parse(getCookie("auth_status") || "{}") !== "done" && (
+								<>
+									<div className="my-4 lg:w-[49%] w-full">
+										<div className="flex justify-between">
+											<label
+												htmlFor="password"
+												className="text-sm text-blue-400 ml-4 mb-1"
+											>
+												Parol
+											</label>
+										</div>
+										
+										<div
+											className="flex items-center gap-2 border w-full py-[10px] px-[25px] border-[#3b82f6] rounded-[8px] focus-within:shadow-[5px_5px_5px_rgba(0,0,0,0.3)] transition">
+											<input
+												id="password"
+												required={JSON.parse(getCookie("auth_status") || "{}") !== "done"}
+												type={visible ? "text" : "password"}
+												name="password"
+												placeholder="Parol"
+												className="w-full outline-none"
+												value={password || ""}
+												onChange={(e) => setPassword(e.target.value?.trim())}
+											/>
+											<span onClick={() => setVisible(!visible)}>
 		                {
 			                visible
 				                ?
@@ -150,32 +154,32 @@ const Profile = () => {
 				                <i className="fa fa-eye-slash text-[#3b82f6]" aria-hidden="true"></i>
 		                }
                   </span>
-								</div>
-							</div>
-							
-							<div className="my-4 lg:w-[49%] w-full">
-								<div className="flex justify-between">
-									<label
-										htmlFor="re_password"
-										className="text-sm text-blue-400 ml-4 mb-1"
-									>
-										Parol tasdiqlash
-									</label>
-								</div>
-								
-								<div
-									className="flex items-center gap-2 border w-full py-[10px] px-[25px] border-[#3b82f6] rounded-[8px] focus-within:shadow-[5px_5px_5px_rgba(0,0,0,0.3)] transition">
-									<input
-										id="re_password"
-										required={JSON.parse(getCookie("auth_status") || "{}") !== "done"}
-										type={visible ? "text" : "password"}
-										name="re_password"
-										placeholder="Parol"
-										className="w-full outline-none"
-										value={re_password || ""}
-										onChange={(e) => setRePassword(e.target.value?.trim())}
-									/>
-									<span onClick={() => setVisible(!visible)}>
+										</div>
+									</div>
+									
+									<div className="my-4 lg:w-[49%] w-full">
+										<div className="flex justify-between">
+											<label
+												htmlFor="re_password"
+												className="text-sm text-blue-400 ml-4 mb-1"
+											>
+												Parol tasdiqlash
+											</label>
+										</div>
+										
+										<div
+											className="flex items-center gap-2 border w-full py-[10px] px-[25px] border-[#3b82f6] rounded-[8px] focus-within:shadow-[5px_5px_5px_rgba(0,0,0,0.3)] transition">
+											<input
+												id="re_password"
+												required={JSON.parse(getCookie("auth_status") || "{}") !== "done"}
+												type={visible ? "text" : "password"}
+												name="re_password"
+												placeholder="Parol"
+												className="w-full outline-none"
+												value={re_password || ""}
+												onChange={(e) => setRePassword(e.target.value?.trim())}
+											/>
+											<span onClick={() => setVisible(!visible)}>
 		                {
 			                visible
 				                ?
@@ -184,8 +188,10 @@ const Profile = () => {
 				                <i className="fa fa-eye-slash text-[#3b82f6]" aria-hidden="true"></i>
 		                }
                   </span>
-								</div>
-							</div>
+										</div>
+									</div>
+								</>
+							)}
 							
 							<div className="my-4 lg:w-[49%] w-full">
 								<div className="flex justify-between">
@@ -268,7 +274,11 @@ const Profile = () => {
 									id="country"
 									className="form-input"
 									value={country || ""}
-									onChange={(e) => setCountry(e.target.value)}
+									onChange={(e) => {
+										setCountry(e.target.value)
+										setRegion(null)
+										setDistrict(null)
+									}}
 								>
 									<option>Tanlang...</option>
 									{countries && countries?.map((el) => (
@@ -291,9 +301,12 @@ const Profile = () => {
 									name="region"
 									id="region"
 									className="form-input"
-									disabled={!country}
+									disabled={!country || !countries?.find((el) => el?.id === country)?.regions?.length}
 									value={region || ""}
-									onChange={(e) => setRegion(e.target.value)}
+									onChange={(e) => {
+										setRegion(e.target.value)
+										setDistrict(null)
+									}}
 								>
 									<option>Tanlang...</option>
 									{country && countries && countries?.find((el) => el?.id === country)?.regions?.map((item) => (
@@ -316,7 +329,7 @@ const Profile = () => {
 									name="district"
 									id="district"
 									className="form-input"
-									disabled={!region}
+									disabled={!region || !countries?.find((el) => el?.id === country)?.regions?.length}
 									value={district || ""}
 									onChange={(e) => setDistrict(e.target.value)}
 								>
@@ -327,28 +340,28 @@ const Profile = () => {
 								</select>
 							</div>
 							
-							<div className="my-4 lg:w-[49%] w-full">
-								<div className="flex justify-between">
-									<label
-										htmlFor="phone_number"
-										className="text-sm text-blue-400 ml-4 mb-1"
-									>
-										Manzil kiritish
-									</label>
-								</div>
-								
-								<input
-									id="phone_number"
-									// required
-									type="text"
-									name="phone_number"
-									placeholder="Manzil kiritish"
-									className="form-input"
-									// disabled={JSON.parse(getCookie("auth_status") || "null") === "done"}
-									// value={user.name}
-									// onChange={(e) => setUser({...user, name: e.target.value})}
-								/>
-							</div>
+							{/*<div className="my-4 lg:w-[49%] w-full">*/}
+							{/*	<div className="flex justify-between">*/}
+							{/*		<label*/}
+							{/*			htmlFor="phone_number"*/}
+							{/*			className="text-sm text-blue-400 ml-4 mb-1"*/}
+							{/*		>*/}
+							{/*			Manzil kiritish*/}
+							{/*		</label>*/}
+							{/*	</div>*/}
+							{/*	*/}
+							{/*	<input*/}
+							{/*		id="phone_number"*/}
+							{/*		// required*/}
+							{/*		type="text"*/}
+							{/*		name="phone_number"*/}
+							{/*		placeholder="Manzil kiritish"*/}
+							{/*		className="form-input"*/}
+							{/*		// disabled={JSON.parse(getCookie("auth_status") || "null") === "done"}*/}
+							{/*		// value={user.name}*/}
+							{/*		// onChange={(e) => setUser({...user, name: e.target.value})}*/}
+							{/*	/>*/}
+							{/*</div>*/}
 							
 							<div className="lg:w-[49%] w-full">
 								<div>

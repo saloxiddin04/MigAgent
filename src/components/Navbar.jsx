@@ -27,7 +27,7 @@ const Navbar = () => {
 										<div className="text-end mr-2 flex gap-3">
 											<div>
 												<span className="block text-lg font-medium text-gray-500">
-	                        {getUserData().first_name}
+	                        {getUserData().login}
                         </span>{" "}
 											</div>
 										</div>
