@@ -2,12 +2,19 @@ import React, {useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import {getCookie, getUserData, setUserData, updateUserAuth} from "../../auth/jwtService.js";
 import {toast} from "react-toastify";
-import {useDispatch} from "react-redux";
-import {getUserDetail, updateUser} from "../../redux/Slices/userDetailSlice/userDetailSlice.js";
+import {useDispatch, useSelector} from "react-redux";
+import {
+	getCountriesRegions,
+	getDistricts,
+	getUserDetail,
+	updateUser
+} from "../../redux/Slices/userDetailSlice/userDetailSlice.js";
 
 const Profile = () => {
 	const dispatch = useDispatch()
 	const navigate = useNavigate()
+
+	const {countries, districts} = useSelector((state) => state.user)
 	
 	const [visible, setVisible] = useState(false)
 	
@@ -20,7 +27,11 @@ const Profile = () => {
 	const [mid_name, setMidName] = useState(null)
 	const [platform_usage, setPlatformUsage] = useState(null)
 	const [work_abroad_status, setWorkAbroadStatus] = useState(null)
-	
+
+	const [country, setCountry] = useState(null)
+	const [region, setRegion] = useState(null)
+	const [district, setDistrict] = useState(null)
+
 	useEffect(() => {
 		if (JSON.parse(getCookie("auth_status") || "{}") === "done") {
 			setFirstName(getUserData()?.first_name)
@@ -29,8 +40,19 @@ const Profile = () => {
 			setLogin(getUserData()?.login)
 			setPlatformUsage(getUserData()?.platform_usage)
 			setWorkAbroadStatus(getUserData()?.work_abroad_status)
+			setCountry(getUserData()?.country)
+			setDistrict(getUserData()?.district)
+			setRegion(getUserData()?.region)
 		}
-	}, [])
+
+		dispatch(getCountriesRegions())
+	}, [dispatch])
+
+	useEffect(() => {
+		if (region) {
+			dispatch(getDistricts(region))
+		}
+	}, [dispatch, region]);
 	
 	const updateAuthUser = (e) => {
 		e.preventDefault();
@@ -38,7 +60,7 @@ const Profile = () => {
 		if (password !== re_password) return toast.error("Parollar bir xil bo'lishi shart!")
 		
 		if (JSON.parse(getCookie("auth_status") || "{}") === "done") {
-			dispatch(updateUser({first_name, last_name, mid_name, login, password, re_password, platform_usage, work_abroad_status}))?.then(() => {
+			dispatch(updateUser({first_name, last_name, mid_name, login, password, re_password, platform_usage, work_abroad_status, country, district, region}))?.then(() => {
 				toast.success("Muvofaqqiyatli yangilandi!")
 				dispatch(getUserDetail())?.then(({payload}) => {
 					setUserData(payload)
@@ -53,7 +75,10 @@ const Profile = () => {
 				work_abroad_status,
 				login,
 				password,
-				re_password
+				re_password,
+				country,
+				district,
+				region
 			})
 				.then(() => {
 					toast.success("Successfully");
@@ -64,7 +89,7 @@ const Profile = () => {
 				});
 		}
 	};
-	
+
 	return (
 		<>
 			<div className="w-full min-h-screen flex items-center justify-center bg-[rgb(248,249,250)]">
@@ -242,18 +267,20 @@ const Profile = () => {
 									name="country"
 									id="country"
 									className="form-input"
-									// disabled={JSON.parse(getCookie("auth_status") || "null") === "done"}
-									// required
+									value={country || ""}
+									onChange={(e) => setCountry(e.target.value)}
 								>
-									<option value="">Tanlang...</option>
-									<option value="">O'zbekiston</option>
+									<option>Tanlang...</option>
+									{countries && countries?.map((el) => (
+										<option key={el?.id} value={el?.id}>{el?.name}</option>
+									))}
 								</select>
 							</div>
 							
 							<div className="my-4 lg:w-[49%] w-full">
 								<div className="flex justify-between">
 									<label
-										htmlFor="country"
+										htmlFor="region"
 										className="text-sm text-blue-400 ml-4 mb-1"
 									>
 										Viloyat tanlash
@@ -261,22 +288,24 @@ const Profile = () => {
 								</div>
 								
 								<select
-									name="country"
-									id="country"
+									name="region"
+									id="region"
 									className="form-input"
-									// disabled={JSON.parse(getCookie("auth_status") || "null") === "done"}
-									// required
+									disabled={!country}
+									value={region || ""}
+									onChange={(e) => setRegion(e.target.value)}
 								>
-									<option value="">Tanlang...</option>
-									<option value="">Toshkent sh</option>
-									<option value="">Toshkent viloyati</option>
+									<option>Tanlang...</option>
+									{country && countries && countries?.find((el) => el?.id === country)?.regions?.map((item) => (
+										<option key={item?.id} value={item?.id}>{item?.name}</option>
+									))}
 								</select>
 							</div>
 							
 							<div className="my-4 lg:w-[49%] w-full">
 								<div className="flex justify-between">
 									<label
-										htmlFor="country"
+										htmlFor="district"
 										className="text-sm text-blue-400 ml-4 mb-1"
 									>
 										Tuman tanlash
@@ -284,14 +313,17 @@ const Profile = () => {
 								</div>
 								
 								<select
-									name="country"
-									id="country"
+									name="district"
+									id="district"
 									className="form-input"
-									// disabled={JSON.parse(getCookie("auth_status") || "null") === "done"}
-									// required
+									disabled={!region}
+									value={district || ""}
+									onChange={(e) => setDistrict(e.target.value)}
 								>
-									<option value="">Tanlang...</option>
-									<option value="">Yunusobod tumani</option>
+									<option>Tanlang...</option>
+									{districts && districts?.map((el) => (
+										<option key={el?.id} value={el?.id}>{el?.name}</option>
+									))}
 								</select>
 							</div>
 							
