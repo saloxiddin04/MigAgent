@@ -49,7 +49,7 @@ const Profile = () => {
 	}, [dispatch])
 
 	useEffect(() => {
-		if (region) {
+		if (typeof region === "string") {
 			dispatch(getDistricts(region))
 		}
 	}, [dispatch, region]);
