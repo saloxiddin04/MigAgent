@@ -45,6 +45,13 @@ const Navbar = () => {
 												<span className="text-sm sm:text-base">Profil</span>
 												{/*<FaUserAlt size="20" />*/}
 											</Link>
+											<Link
+												to={"/dashboard"}
+												className="px-3 py-2 hover:bg-blue-500 hover:text-white flex justify-between items-center w-full"
+											>
+												<span className="text-sm sm:text-base">Statistika</span>
+												{/*<FaUserAlt size="20" />*/}
+											</Link>
 											<button
 												onClick={logout}
 												className="px-3 py-2 hover:bg-blue-500 hover:text-white flex justify-between items-center w-full cursor-pointer"

@@ -49,7 +49,7 @@ const Register = () => {
 						)}
 					</h2>
 					<p>
-						<a className="underline" href={`https://t.me/xorijda_ishbot?start=${state?.forgot ? 'reset_password' : 'register'}`}>@xorijdaishbot</a> telegram botiga kiring va 1 daqiqalik kodingizni oling
+						<a className="underline" href={`tg://resolve?domain=xorijda_ishbot`}>@xorijdaishbot</a> telegram botiga kiring va 1 daqiqalik kodingizni oling
 					</p>
 				</div>
 				

@@ -6,7 +6,8 @@ const initialState = {
 	loading: false,
 	user: getUserData() || null,
 	countries: null,
-	districts: null
+	districts: null,
+	dashboard: null
 }
 
 export const getUserDetail = createAsyncThunk(
@@ -50,6 +51,18 @@ export const getDistricts = createAsyncThunk(
 	async (id) => {
 		try {
 			const response = await instance.get(`user/get-districts/${id}`)
+			return response.data
+		} catch (e) {
+			return e;
+		}
+	}
+)
+
+export const getDashboard = createAsyncThunk(
+	"user/getDashboard",
+	async () => {
+		try {
+			const response = await instance("user/client-dashboard")
 			return response.data
 		} catch (e) {
 			return e;
@@ -112,6 +125,20 @@ const userDetailSlice = createSlice({
 			.addCase(getDistricts.rejected, (state) => {
 				state.loading = false
 				state.districts = null
+			})
+		
+		// getDashboard
+		builder
+			.addCase(getDashboard.pending, (state) => {
+				state.loading = true
+			})
+			.addCase(getDashboard.fulfilled, (state, {payload}) => {
+				state.loading = false
+				state.dashboard = payload
+			})
+			.addCase(getDashboard.rejected, (state) => {
+				state.loading = false
+				state.dashboard = null
 			})
 	}
 })

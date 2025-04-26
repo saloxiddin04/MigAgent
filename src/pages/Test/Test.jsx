@@ -124,13 +124,15 @@ const Test = () => {
 
 					{selectedCategory && (
 						<div className="mt-4">
-							<ul className="mt-2 flex justify-center items-center flex-wrap gap-5">
+							{/*<ul className="mt-2 flex justify-center items-center flex-wrap gap-5">*/}
+							<ul className="mt-2 grid grid-cols-4 sm:grid-cols-3 md:grid-cols-7 gap-4 justify-center items-center">
 								{categories
 									.find((cat) => cat.id === selectedCategory)
 									?.variant.map((variant) => (
 										<li
 											key={variant.id}
-											className={`py-2 px-4 w-full lg:w-[13%] sm:w-[15%] text-center border border-[#067BBE] text-[#067BBE] rounded cursor-pointer ${
+											className={`py-2 px-4 text-center border border-[#067BBE] text-[#067BBE] rounded cursor-pointer transition-all ${
+												// className={`py-2 px-4 w-full lg:w-[13%] sm:w-[15%] text-center border border-[#067BBE] text-[#067BBE] rounded cursor-pointer ${
 												selectedVariant === variant.id
 													? "bg-[#067BBE] text-white"
 													: "hover:bg-gray-100"
@@ -147,7 +149,7 @@ const Test = () => {
 							</ul>
 						</div>
 					)}
-
+					
 					{selectedVariant && (
 						<div className="">
 							{loading ? (
