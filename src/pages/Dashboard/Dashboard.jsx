@@ -67,7 +67,7 @@ const Dashboard = () => {
 				</div>
 				
 				<div className={'w-full lg:w-[49%] md:w-full h-2/4'}>
-					<h1 className={'text-2xl p-4 font-bold'}>Oy bo'yicha ishlanganlar ({currentMonthName})</h1>
+					<h1 className={'text-2xl p-4 font-bold'}>Oy bo'yicha ishlanganlar (oxirigi 30 kun)</h1>
 					<div
 						className={'w-full h-full relative overflow-hidden shadow-md sm:rounded flex flex-wrap justify-center pb-4'}>
 						<div>
@@ -121,7 +121,7 @@ const Dashboard = () => {
 								className="px-4 py-3 font-medium whitespace-nowrap border-b-1">
 								{index + 1}
 							</td>
-							<td className={'px-4 py-2 border-b-1'}>
+							<td className={'px-4 py-2 border-b-1 whitespace-nowrap'}>
 								{moment(item?.created_time).format("DD-MM-YYYY")}
 							</td>
 							<td className={'px-4 py-2 border-b-1'}>
