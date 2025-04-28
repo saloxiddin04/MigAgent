@@ -10,13 +10,6 @@ const Dashboard = () => {
 	
 	const colors = ['#1A97F5', '#03C9D7', '#7352FF', '#1E4DB7', '#FB9678']
 	
-	const monthNames = [
-		"Yanvar", "Fevral", "Mart", "Aprel", "May", "Iyun",
-		"Iyul", "Avgust", "Sentabr", "Oktabr", "Noyabr", "Dekabr"
-	];
-	
-	const currentMonthName = monthNames[new Date().getMonth()];
-	
 	const totalCount = [
 		{label: "To'g'ri javoblar soni", value: parseInt(dashboard?.total_all?.total_correct), color: colors[0]},
 		{label: "Noto'g'ri javoblar soni", value: parseInt(dashboard?.total_all?.total_incorrect), color: colors[1]}

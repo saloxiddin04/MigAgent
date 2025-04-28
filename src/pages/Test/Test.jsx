@@ -100,7 +100,7 @@ const Test = () => {
 		<>
 			<div className="container mx-auto py-10 pt-36">
 				<div>
-					<div className="flex space-x-4 border-b pb-2">
+					<div className="flex gap-4 flex-wrap space-x-4 border-b pb-2">
 						{categories?.map((category) => (
 							<button
 								key={category.id}
@@ -125,7 +125,7 @@ const Test = () => {
 					{selectedCategory && (
 						<div className="mt-4">
 							{/*<ul className="mt-2 flex justify-center items-center flex-wrap gap-5">*/}
-							<ul className="mt-2 grid grid-cols-4 sm:grid-cols-3 md:grid-cols-7 gap-4 justify-center items-center">
+							<ul className="mt-2 grid grid-cols-3 sm:grid-cols-3 md:grid-cols-7 gap-4 justify-center items-center">
 								{categories
 									.find((cat) => cat.id === selectedCategory)
 									?.variant.map((variant) => (
