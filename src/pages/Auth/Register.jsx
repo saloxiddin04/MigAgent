@@ -49,7 +49,7 @@ const Register = () => {
 						)}
 					</h2>
 					<p>
-						<a className="underline" href={`tg://resolve?domain=test_xorijdaish_bot`}>@xorijdaishbot</a> telegram botiga kiring va 1 daqiqalik kodingizni oling
+						<a className="underline" href={`tg://resolve?domain=test_xorijdaish_bot`}>@test_xorijdaish_bot</a> telegram botiga kiring va 1 daqiqalik kodingizni oling
 					</p>
 				</div>
 				
