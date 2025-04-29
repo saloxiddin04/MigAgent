@@ -152,10 +152,7 @@ const Test = () => {
 					
 					{selectedVariant && (
 						<div className="">
-							{loading ? (
-								<p className="text-center text-gray-500">Loading...</p>
-							) : (
-								<>
+							<>
 									{Object.keys(groupedQuestions)?.map((type) => (
 										<div key={type} className="my-6">
 											<h2 className="text-3xl font-bold text-gray-500 mt-4">
@@ -351,7 +348,6 @@ const Test = () => {
 										</div>
 									)}
 								</>
-							)}
 						</div>
 					)}
 				</div>
