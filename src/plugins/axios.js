@@ -1,7 +1,7 @@
 import axios from "axios";
 import {getAccessToken, logout} from "../auth/jwtService.js";
 
-export const api_url = "http://api-xorijdaish.asilbro.uz"
+export const api_url = "https://cabinet-test.xorijdaish.uz"
 
 const instance = axios.create({
 	// baseURL: import.meta.env.VITE_API_URL_DEVELOP,

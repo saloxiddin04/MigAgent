@@ -30,6 +30,6 @@ export default defineConfig({
     port: 3007, // 5173 o'rniga 3007 port
     host: true,  // Docker orqali tashqi ulanish uchun
     // allowedHosts: true // Tashqi domenni qo'shish
-    allowedHosts: ['xorijdaish.asilbro.uz', 'dcid.unicon.uz'] // Tashqi domenni qo'shish
+    allowedHosts: ['test.xorijdaish.uz'] // Tashqi domenni qo'shish
   }
 })
