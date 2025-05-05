@@ -10,6 +10,7 @@ import Register from "./pages/Auth/Register.jsx";
 import Login from "./pages/Auth/Login.jsx";
 import Forgot from "./pages/Auth/Forgot.jsx";
 import Dashboard from "./pages/Dashboard/Dashboard.jsx";
+import NotFound from "./pages/NotFound.jsx";
 // import {getUserData} from "./auth/jwtService.js";
 
 const App = () => {
@@ -55,6 +56,7 @@ const App = () => {
             <Route path="/profile" element={<Profile/>}/>
             <Route path="/test" element={<Test/>}/>
             <Route path="/dashboard" element={<Dashboard/>}/>
+            <Route path="*" element={<NotFound/>}/>
           </Routes>
         </div>
 
