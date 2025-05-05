@@ -6,7 +6,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {
 	getCountriesRegions,
 	getDistricts,
-	getUserDetail,
+	getUserDetail, setDistricts,
 	updateUser
 } from "../../redux/Slices/userDetailSlice/userDetailSlice.js";
 
@@ -58,6 +58,12 @@ const Profile = () => {
 		e.preventDefault();
 		
 		if (password !== re_password) return toast.error("Parollar bir xil bo'lishi shart!")
+		if (work_abroad_status === null) return toast.error("Iltimos, chet elda ishlash holatini tanlang.")
+		if (platform_usage === null) return toast.error("Iltimos, platformadan foydalanish sababini tanlang.")
+		
+		if (!country) return toast.error("Iltimos, davlat tanlang.")
+		if (countries?.find((el) => el?.id === country)?.regions?.length && !region) return toast.error("Iltimos, shahar/viloyat tanlang.")
+		if (districts && !district) return toast.error("Iltimos, tuman tanlang.")
 		
 		if (JSON.parse(getCookie("auth_status") || "{}") === "done") {
 			dispatch(updateUser({first_name, last_name, mid_name, login, password, re_password, platform_usage, work_abroad_status, country, district, region}))?.then(() => {
@@ -90,8 +96,6 @@ const Profile = () => {
 		}
 	};
 	
-	console.log(countries?.find((el) => el?.id === country)?.regions)
-
 	return (
 		<>
 			<div className="w-full min-h-screen flex items-center justify-center bg-[rgb(248,249,250)]">
@@ -278,6 +282,7 @@ const Profile = () => {
 										setCountry(e.target.value)
 										setRegion(null)
 										setDistrict(null)
+										dispatch(setDistricts(null))
 									}}
 								>
 									<option>Tanlang...</option>
@@ -306,6 +311,7 @@ const Profile = () => {
 									onChange={(e) => {
 										setRegion(e.target.value)
 										setDistrict(null)
+										dispatch(setDistricts(null))
 									}}
 								>
 									<option>Tanlang...</option>

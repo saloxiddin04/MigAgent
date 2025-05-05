@@ -73,6 +73,11 @@ export const getDashboard = createAsyncThunk(
 const userDetailSlice = createSlice({
 	name: "user",
 	initialState,
+	reducers: {
+		setDistricts: (state, {payload}) => {
+			state.districts = payload
+		}
+	},
 	extraReducers: builder => {
 		builder
 			.addCase(getUserDetail.pending, (state) => {
@@ -143,4 +148,5 @@ const userDetailSlice = createSlice({
 	}
 })
 
+export const { setDistricts } = userDetailSlice.actions;
 export default userDetailSlice.reducer
