@@ -11,7 +11,8 @@ WORKDIR /frontend
 COPY . .
 
 # Install dependencies
-RUN npm install --force --network-timeout 1000000000
+RUN npm install -g npm@11.3.0
+RUN npm install --force
 
 # Build the React app
 RUN NODE_OPTIONS=--max_old_space_size=4096 npm run build
