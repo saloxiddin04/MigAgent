@@ -27,7 +27,10 @@ const Test = () => {
 		dispatch(getCategories()).then(({ payload }) => {
 			if (!selectedCategory || !selectedVariant) {
 				setSelectedCategory(payload[0]?.id);
-				setSelectedVariant(payload[0]?.variant[0]?.id);
+				const variantOne = payload[0]?.variant?.find(
+					(v) => v?.variant_number === 1
+				);
+				setSelectedVariant(variantOne?.id);
 			}
 		});
 	}, [dispatch]);
@@ -128,7 +131,10 @@ const Test = () => {
 							<ul className="mt-2 grid grid-cols-3 sm:grid-cols-3 md:grid-cols-7 gap-4 justify-center items-center">
 								{categories
 									.find((cat) => cat.id === selectedCategory)
-									?.variant.map((variant) => (
+									?.variant
+									?.slice()
+									.sort((a, b) => a?.variant_number - b?.variant_number)
+									.map((variant) => (
 										<li
 											key={variant.id}
 											className={`py-2 px-4 text-center border border-[#067BBE] text-[#067BBE] rounded cursor-pointer transition-all ${
