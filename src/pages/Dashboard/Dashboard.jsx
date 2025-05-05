@@ -11,13 +11,13 @@ const Dashboard = () => {
 	const colors = ['#1A97F5', '#03C9D7', '#7352FF', '#1E4DB7', '#FB9678']
 	
 	const totalCount = [
-		{label: "To'g'ri javoblar soni", value: parseInt(dashboard?.total_all?.total_correct), color: colors[0]},
-		{label: "Noto'g'ri javoblar soni", value: parseInt(dashboard?.total_all?.total_incorrect), color: colors[1]}
+		{label: "To'g'ri javoblar soni", value: parseInt(dashboard?.total_all?.total_correct) || 0, color: colors[0]},
+		{label: "Noto'g'ri javoblar soni", value: parseInt(dashboard?.total_all?.total_incorrect) || 0, color: colors[1]}
 	]
 	
 	const monthlyCount = [
-		{label: "To'g'ri javoblar soni", value: parseInt(dashboard?.total_last_month?.total_correct), color: colors[2]},
-		{label: "Noto'g'ri javoblar soni", value: parseInt(dashboard?.total_last_month?.total_incorrect), color: colors[3]}
+		{label: "To'g'ri javoblar soni", value: parseInt(dashboard?.total_last_month?.total_correct) || 0, color: colors[2]},
+		{label: "Noto'g'ri javoblar soni", value: parseInt(dashboard?.total_last_month?.total_incorrect) || 0, color: colors[3]}
 	]
 	
 	useEffect(() => {

@@ -9,10 +9,28 @@
 	outline: none;
 	border: none;
 	border-radius: 8px;
-	padding: 10px 25px;
+	padding: 8px;
 	color: #fff;
 	transition: 0.4s;
 	cursor: pointer;
+}
+
+@media screen and (min-width: 576px) {
+	.btn {
+		padding: 10px 25px;
+	}
+}
+
+@media screen and (min-width: 768px) {
+	.btn {
+		padding: 12px 30px;
+	}
+}
+
+@media screen and (min-width: 992px) {
+	.btn {
+		padding: 14px 35px;
+	}
 }
 
 .btn-primary {
