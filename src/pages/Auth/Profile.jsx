@@ -103,7 +103,156 @@ const Profile = () => {
 					<div className="mt-36">
 						<form className="w-full flex justify-between flex-wrap" onSubmit={updateAuthUser}>
 							
-							<div className="my-4 lg:w-[49%] w-full">
+							<div className="my-4 lg:w-[33%] w-full">
+								<div className="flex justify-between">
+									<label
+										htmlFor="name"
+										className="text-sm text-blue-400 ml-4 mb-1"
+									>
+										Ismingiz
+									</label>
+								</div>
+								
+								<input
+									id="name"
+									required
+									type="text"
+									name="name"
+									placeholder="Ismingiz"
+									className="form-input"
+									value={first_name || ""}
+									onChange={(e) => setFirstName(e.target.value)}
+								/>
+							</div>
+							
+							<div className="my-4 lg:w-[33%] w-full">
+								<div className="flex justify-between">
+									<label
+										htmlFor="surname"
+										className="text-sm text-blue-400 ml-4 mb-1"
+									>
+										Familiyangiz
+									</label>
+								</div>
+								
+								<input
+									id="surname"
+									required
+									type="text"
+									name="surname"
+									placeholder="Familiyangiz"
+									className="form-input"
+									value={last_name || ""}
+									onChange={(e) => setLastNane(e.target.value)}
+								/>
+							</div>
+							
+							<div className="my-4 lg:w-[33%] w-full">
+								<div className="flex justify-between">
+									<label
+										htmlFor="midname"
+										className="text-sm text-blue-400 ml-4 mb-1"
+									>
+										Sharifingiz
+									</label>
+								</div>
+								
+								<input
+									id="midname"
+									required
+									type="text"
+									name="midname"
+									placeholder="Sharifingiz"
+									className="form-input"
+									value={mid_name || ""}
+									onChange={(e) => setMidName(e.target.value)}
+								/>
+							</div>
+							
+							<div className="my-4 lg:w-[33%] w-full">
+								<div className="flex justify-between">
+									<label
+										htmlFor="country"
+										className="text-sm text-blue-400 ml-4 mb-1"
+									>
+										Davlat tanlash (Yashash manzil)
+									</label>
+								</div>
+								
+								<select
+									name="country"
+									id="country"
+									className="form-input"
+									value={country || ""}
+									onChange={(e) => {
+										setCountry(e.target.value)
+										setRegion(null)
+										setDistrict(null)
+										dispatch(setDistricts(null))
+									}}
+								>
+									<option>Tanlang...</option>
+									{countries && countries?.map((el) => (
+										<option key={el?.id} value={el?.id}>{el?.name}</option>
+									))}
+								</select>
+							</div>
+							
+							<div className="my-4 lg:w-[33%] w-full">
+								<div className="flex justify-between">
+									<label
+										htmlFor="region"
+										className="text-sm text-blue-400 ml-4 mb-1"
+									>
+										Viloyat tanlash
+									</label>
+								</div>
+								
+								<select
+									name="region"
+									id="region"
+									className="form-input"
+									disabled={!country || !countries?.find((el) => el?.id === country)?.regions?.length}
+									value={region || ""}
+									onChange={(e) => {
+										setRegion(e.target.value)
+										setDistrict(null)
+										dispatch(setDistricts(null))
+									}}
+								>
+									<option>Tanlang...</option>
+									{country && countries && countries?.find((el) => el?.id === country)?.regions?.map((item) => (
+										<option key={item?.id} value={item?.id}>{item?.name}</option>
+									))}
+								</select>
+							</div>
+							
+							<div className="my-4 lg:w-[33%] w-full">
+								<div className="flex justify-between">
+									<label
+										htmlFor="district"
+										className="text-sm text-blue-400 ml-4 mb-1"
+									>
+										Tuman tanlash
+									</label>
+								</div>
+								
+								<select
+									name="district"
+									id="district"
+									className="form-input"
+									disabled={!region || !countries?.find((el) => el?.id === country)?.regions?.length}
+									value={district || ""}
+									onChange={(e) => setDistrict(e.target.value)}
+								>
+									<option>Tanlang...</option>
+									{districts && districts?.map((el) => (
+										<option key={el?.id} value={el?.id}>{el?.name}</option>
+									))}
+								</select>
+							</div>
+							
+							<div className="my-4 lg:w-[33%] w-full">
 								<div className="flex justify-between">
 									<label
 										htmlFor="login"
@@ -127,7 +276,7 @@ const Profile = () => {
 							
 							{JSON.parse(getCookie("auth_status") || "{}") !== "done" && (
 								<>
-									<div className="my-4 lg:w-[49%] w-full">
+									<div className="my-4 lg:w-[33%] w-full">
 										<div className="flex justify-between">
 											<label
 												htmlFor="password"
@@ -161,7 +310,7 @@ const Profile = () => {
 										</div>
 									</div>
 									
-									<div className="my-4 lg:w-[49%] w-full">
+									<div className="my-4 lg:w-[33%] w-full">
 										<div className="flex justify-between">
 											<label
 												htmlFor="re_password"
@@ -196,155 +345,6 @@ const Profile = () => {
 									</div>
 								</>
 							)}
-							
-							<div className="my-4 lg:w-[49%] w-full">
-								<div className="flex justify-between">
-									<label
-										htmlFor="name"
-										className="text-sm text-blue-400 ml-4 mb-1"
-									>
-										Ismingiz
-									</label>
-								</div>
-								
-								<input
-									id="name"
-									required
-									type="text"
-									name="name"
-									placeholder="Ismingiz"
-									className="form-input"
-									value={first_name || ""}
-									onChange={(e) => setFirstName(e.target.value)}
-								/>
-							</div>
-							
-							<div className="my-4 lg:w-[49%] w-full">
-								<div className="flex justify-between">
-									<label
-										htmlFor="surname"
-										className="text-sm text-blue-400 ml-4 mb-1"
-									>
-										Familiyangiz
-									</label>
-								</div>
-								
-								<input
-									id="surname"
-									required
-									type="text"
-									name="surname"
-									placeholder="Familiyangiz"
-									className="form-input"
-									value={last_name || ""}
-									onChange={(e) => setLastNane(e.target.value)}
-								/>
-							</div>
-							
-							<div className="my-4 lg:w-[49%] w-full">
-								<div className="flex justify-between">
-									<label
-										htmlFor="midname"
-										className="text-sm text-blue-400 ml-4 mb-1"
-									>
-										Sharifingiz
-									</label>
-								</div>
-								
-								<input
-									id="midname"
-									required
-									type="text"
-									name="midname"
-									placeholder="Sharifingiz"
-									className="form-input"
-									value={mid_name || ""}
-									onChange={(e) => setMidName(e.target.value)}
-								/>
-							</div>
-							
-							<div className="my-4 lg:w-[49%] w-full">
-								<div className="flex justify-between">
-									<label
-										htmlFor="country"
-										className="text-sm text-blue-400 ml-4 mb-1"
-									>
-										Davlat tanlash (Yashash manzil)
-									</label>
-								</div>
-								
-								<select
-									name="country"
-									id="country"
-									className="form-input"
-									value={country || ""}
-									onChange={(e) => {
-										setCountry(e.target.value)
-										setRegion(null)
-										setDistrict(null)
-										dispatch(setDistricts(null))
-									}}
-								>
-									<option>Tanlang...</option>
-									{countries && countries?.map((el) => (
-										<option key={el?.id} value={el?.id}>{el?.name}</option>
-									))}
-								</select>
-							</div>
-							
-							<div className="my-4 lg:w-[49%] w-full">
-								<div className="flex justify-between">
-									<label
-										htmlFor="region"
-										className="text-sm text-blue-400 ml-4 mb-1"
-									>
-										Viloyat tanlash
-									</label>
-								</div>
-								
-								<select
-									name="region"
-									id="region"
-									className="form-input"
-									disabled={!country || !countries?.find((el) => el?.id === country)?.regions?.length}
-									value={region || ""}
-									onChange={(e) => {
-										setRegion(e.target.value)
-										setDistrict(null)
-										dispatch(setDistricts(null))
-									}}
-								>
-									<option>Tanlang...</option>
-									{country && countries && countries?.find((el) => el?.id === country)?.regions?.map((item) => (
-										<option key={item?.id} value={item?.id}>{item?.name}</option>
-									))}
-								</select>
-							</div>
-							
-							<div className="my-4 lg:w-[49%] w-full">
-								<div className="flex justify-between">
-									<label
-										htmlFor="district"
-										className="text-sm text-blue-400 ml-4 mb-1"
-									>
-										Tuman tanlash
-									</label>
-								</div>
-								
-								<select
-									name="district"
-									id="district"
-									className="form-input"
-									disabled={!region || !countries?.find((el) => el?.id === country)?.regions?.length}
-									value={district || ""}
-									onChange={(e) => setDistrict(e.target.value)}
-								>
-									<option>Tanlang...</option>
-									{districts && districts?.map((el) => (
-										<option key={el?.id} value={el?.id}>{el?.name}</option>
-									))}
-								</select>
-							</div>
 							
 							{/*<div className="my-4 lg:w-[49%] w-full">*/}
 							{/*	<div className="flex justify-between">*/}
