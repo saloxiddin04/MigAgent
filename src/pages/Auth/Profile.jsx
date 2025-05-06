@@ -191,7 +191,7 @@ const Profile = () => {
 										dispatch(setDistricts(null))
 									}}
 								>
-									<option>Tanlang...</option>
+									<option disabled={JSON.parse(getCookie("auth_status") || "{}") === "done"}>Tanlang...</option>
 									{countries && countries?.map((el) => (
 										<option key={el?.id} value={el?.id}>{el?.name}</option>
 									))}
@@ -220,7 +220,7 @@ const Profile = () => {
 										dispatch(setDistricts(null))
 									}}
 								>
-									<option>Tanlang...</option>
+									<option disabled={JSON.parse(getCookie("auth_status") || "{}") === "done"}>Tanlang...</option>
 									{country && countries && countries?.find((el) => el?.id === country)?.regions?.map((item) => (
 										<option key={item?.id} value={item?.id}>{item?.name}</option>
 									))}
@@ -245,7 +245,7 @@ const Profile = () => {
 									value={district || ""}
 									onChange={(e) => setDistrict(e.target.value)}
 								>
-									<option>Tanlang...</option>
+									<option disabled={JSON.parse(getCookie("auth_status") || "{}") === "done"}>Tanlang...</option>
 									{districts && districts?.map((el) => (
 										<option key={el?.id} value={el?.id}>{el?.name}</option>
 									))}
@@ -369,7 +369,7 @@ const Profile = () => {
 							{/*	/>*/}
 							{/*</div>*/}
 							
-							<div className="lg:w-[49%] w-full">
+							<div className={`${JSON.parse(getCookie("auth_status") || "{}") === "done" ? "lg:w-[30%]" : "lg:w-[49%] w-full"}`}>
 								<div>
 									<label
 										htmlFor="default-checkbox"
@@ -428,7 +428,8 @@ const Profile = () => {
 								</div>
 							</div>
 							
-							<div className="lg:w-[49%] w-full">
+							<div
+								className={`${JSON.parse(getCookie("auth_status") || "{}") === "done" ? "lg:w-[33%]" : "lg:w-[49%] w-full"}`}>
 								<div className="mt-2">
 									<label
 										htmlFor="default-checkbox"
