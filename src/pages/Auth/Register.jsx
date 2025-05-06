@@ -2,7 +2,7 @@ import React from "react";
 import {verifyCode} from "../../auth/jwtService";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import logo from "../../assets/logo_header.png"
+import logo from "../../assets/Logo_Color.svg"
 import {useLocation, useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {getUserDetail} from "../../redux/Slices/userDetailSlice/userDetailSlice.js";
