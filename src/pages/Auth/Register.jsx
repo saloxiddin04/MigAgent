@@ -17,17 +17,21 @@ const Register = () => {
 	const registerUser = (e) => {
 		e.preventDefault();
 		verifyCode({code})?.then((res) => {
-			if (state?.forgot) {
-				navigate("/forgot")
+			if (res?.data?.auth_status === "new") {
+				navigate("/profile")
 			} else {
-				if (res?.data?.auth_status === "done") {
-					dispatch(getUserDetail())?.then(() => {
-						navigate("/")
-						toast.success("Successfully logged");
-					})
+				if (state?.forgot) {
+					navigate("/forgot")
 				} else {
-					toast.success("Successfully registered");
-					navigate("/profile")
+					if (res?.data?.auth_status === "done") {
+						dispatch(getUserDetail())?.then(() => {
+							navigate("/")
+							toast.success("Successfully logged");
+						})
+					} else {
+						toast.success("Successfully registered");
+						navigate("/profile")
+					}
 				}
 			}
 		})
