@@ -7,10 +7,12 @@ import {
 	submitTest,
 } from "../../redux/Slices/testSlices/testSlice.js";
 import { api_url } from "../../plugins/axios.js";
+import {useNavigate} from "react-router-dom";
+import ErrorModal from "../../components/ErrorModal.jsx";
 
 const Test = () => {
 	const dispatch = useDispatch();
-
+	const navigate = useNavigate()
 	const { loading, categories, questions } = useSelector((state) => state.test);
 
 	const [selectedCategory, setSelectedCategory] = useState(null);
@@ -18,6 +20,14 @@ const Test = () => {
 
 	const [userAnswers, setUserAnswers] = useState({});
 	const [submissionResult, setSubmissionResult] = useState(null);
+	
+	const [handleModal, setHandleModal] = useState(false)
+	const [textError, setTextError] = useState("")
+	
+	const closeModal = () => {
+		setHandleModal(false)
+		navigate("/profile")
+	}
 
 	// useEffect(() => {
 	// 	dispatch(getCategories());
@@ -77,8 +87,12 @@ const Test = () => {
 				variant: selectedVariant,
 			})
 		).then(({ payload }) => {
+			if (payload?.status === 400) {
+				setTextError(payload?.response?.data?.error)
+				setHandleModal(true)
+			}
 			setSubmissionResult(payload);
-		});
+		})
 	};
 
 	const groupedQuestions = (questions || []).reduce((acc, question) => {
@@ -358,6 +372,8 @@ const Test = () => {
 					)}
 				</div>
 			</div>
+			
+			<ErrorModal isModalOpen={handleModal} closeModal={closeModal} textError={textError} />
 		</>
 	);
 };
