@@ -9,6 +9,7 @@ import {
 import { api_url } from "../../plugins/axios.js";
 import {useNavigate} from "react-router-dom";
 import ErrorModal from "../../components/ErrorModal.jsx";
+import Image from "../../assets/image.png"
 
 const Test = () => {
 	const dispatch = useDispatch();
@@ -112,7 +113,7 @@ const Test = () => {
 	};
 
 	let questionIndex = 0;
-
+	
 	return (
 		<>
 			<div className="container mx-auto py-10 pt-36">
@@ -171,24 +172,32 @@ const Test = () => {
 					)}
 					
 					{selectedVariant && (
-						<div className="">
+						<div>
 							<>
 									{Object.keys(groupedQuestions)?.map((type) => (
 										<div key={type} className="my-6">
-											<h2 className="text-3xl font-bold text-gray-500 mt-4">
-												{questionTypes[type]}
-											</h2>
-
+											{categories?.find((el) => el?.id === selectedCategory)?.name?.toString()?.toLowerCase()?.startsWith("k") ? "" : (
+												<h2 className="text-3xl font-bold text-gray-500 mt-4">
+													{questionTypes[type]}
+												</h2>
+											)}
+											
 											<ul className="mt-2 w-full flex justify-between items-stretch flex-wrap">
 												{groupedQuestions[type]?.map((test) => (
 													<li
 														key={test?.id}
-														className="mt-4 p-4 border border-gray-300 rounded-lg shadow md:w-[49%] w-full min-h-[200px] flex justify-between flex-col py-4"
+														className="mt-4 p-4 border border-gray-300 rounded-lg shadow md:w-[49%] w-full min-h-[200px] flex flex-col py-4"
 													>
-														<h2 className="text-3xl mb-2 font-semibold text-black">
-															Задание {++questionIndex}
-														</h2>
-
+														{categories?.find((el) => el?.id === selectedCategory)?.name?.toString()?.toLowerCase()?.startsWith("k") ? (
+															<h2 className="text-3xl mb-2 font-semibold text-black">
+																{++questionIndex}
+															</h2>
+														) : (
+															<h2 className="text-3xl mb-2 font-semibold text-black">
+																Задание {++questionIndex}
+															</h2>
+														)}
+														
 														<p className="font-medium italic py-3 text-xl text-gray-600">
 															{test?.description}
 														</p>
@@ -202,6 +211,16 @@ const Test = () => {
 																Ваш браузер не поддерживает аудио элемент.
 															</audio>
 														)}
+														
+														{/*{test?.question_type === 1 &&*/}
+														{/*	/\.(png|jpe?g|webp)$/i.test(test?.file) && (*/}
+														{/*		<img*/}
+														{/*			// src={test?.file}*/}
+														{/*			src={Image}*/}
+														{/*			alt="Question Image"*/}
+														{/*			className="w-full max-h-60 object-cover"*/}
+														{/*		/>*/}
+														{/*	)}*/}
 
 														<p className="font-medium italic text-gray-600">
 															{test?.question_text}
