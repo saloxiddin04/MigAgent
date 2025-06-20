@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, {useEffect, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
 import {
 	clearQuestions,
 	getCategories,
 	getTestsByVariant,
 	submitTest,
 } from "../../redux/Slices/testSlices/testSlice.js";
-import { api_url } from "../../plugins/axios.js";
+import {api_url} from "../../plugins/axios.js";
 import {useNavigate} from "react-router-dom";
 import ErrorModal from "../../components/ErrorModal.jsx";
 import Image from "../../assets/image.png"
@@ -14,11 +14,11 @@ import Image from "../../assets/image.png"
 const Test = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate()
-	const { loading, categories, questions } = useSelector((state) => state.test);
-
+	const {loading, categories, questions} = useSelector((state) => state.test);
+	
 	const [selectedCategory, setSelectedCategory] = useState(null);
 	const [selectedVariant, setSelectedVariant] = useState(null);
-
+	
 	const [userAnswers, setUserAnswers] = useState({});
 	const [submissionResult, setSubmissionResult] = useState(null);
 	
@@ -29,13 +29,13 @@ const Test = () => {
 		setHandleModal(false)
 		navigate("/profile")
 	}
-
+	
 	// useEffect(() => {
 	// 	dispatch(getCategories());
 	// }, [dispatch]);
-
+	
 	useEffect(() => {
-		dispatch(getCategories()).then(({ payload }) => {
+		dispatch(getCategories()).then(({payload}) => {
 			if (!selectedCategory || !selectedVariant) {
 				setSelectedCategory(payload[0]?.id);
 				const variantOne = payload[0]?.variant?.find(
@@ -45,13 +45,13 @@ const Test = () => {
 			}
 		});
 	}, [dispatch]);
-
+	
 	useEffect(() => {
 		if (selectedVariant) {
 			dispatch(getTestsByVariant(selectedVariant));
 		}
 	}, [dispatch, selectedVariant]);
-
+	
 	const renderQuestionType = (type) => {
 		switch (type) {
 			case 0:
@@ -68,16 +68,16 @@ const Test = () => {
 				return "Unknown Type";
 		}
 	};
-
+	
 	const handleAnswerSelection = (questionId, answerId, answerText) => {
 		setUserAnswers((prev) => ({
 			...prev,
 			[questionId]: answerId
-				? { answer: answerId }
-				: { answer_text: answerText },
+				? {answer: answerId}
+				: {answer_text: answerText},
 		}));
 	};
-
+	
 	const handleSubmitTest = () => {
 		dispatch(
 			submitTest({
@@ -87,7 +87,7 @@ const Test = () => {
 				})),
 				variant: selectedVariant,
 			})
-		).then(({ payload }) => {
+		).then(({payload}) => {
 			if (payload?.status === 400) {
 				setTextError(payload?.response?.data?.error)
 				setHandleModal(true)
@@ -95,14 +95,14 @@ const Test = () => {
 			setSubmissionResult(payload);
 		})
 	};
-
+	
 	const groupedQuestions = (questions || []).reduce((acc, question) => {
 		const type = question?.question_type;
 		if (!acc[type]) acc[type] = [];
 		acc[type].push(question);
 		return acc;
 	}, {});
-
+	
 	const questionTypes = {
 		0: "Аудирование",
 		1: "Чтение",
@@ -111,7 +111,7 @@ const Test = () => {
 		4: "ИСТОРИЯ РОССИИ",
 		5: "ОСНОВЫ ЗАКОНОДАТЕЛЬСТВА РОССИЙСКОЙ ФЕДЕРАЦИИ",
 	};
-
+	
 	let questionIndex = 0;
 	
 	return (
@@ -139,7 +139,7 @@ const Test = () => {
 							</button>
 						))}
 					</div>
-
+					
 					{selectedCategory && (
 						<div className="mt-4">
 							{/*<ul className="mt-2 flex justify-center items-center flex-wrap gap-5">*/}
@@ -174,225 +174,223 @@ const Test = () => {
 					{selectedVariant && (
 						<div>
 							<>
-									{Object.keys(groupedQuestions)?.map((type) => (
-										<div key={type} className="my-6">
-											{categories?.find((el) => el?.id === selectedCategory)?.name?.toString()?.toLowerCase()?.startsWith("k") ? "" : (
-												<h2 className="text-3xl font-bold text-gray-500 mt-4">
-													{questionTypes[type]}
-												</h2>
-											)}
-											
-											<ul className="mt-2 w-full flex justify-between items-stretch flex-wrap">
-												{groupedQuestions[type]?.map((test) => (
-													<li
-														key={test?.id}
-														className="mt-4 p-4 border border-gray-300 rounded-lg shadow md:w-[49%] w-full min-h-[200px] flex flex-col py-4"
-													>
-														{categories?.find((el) => el?.id === selectedCategory)?.name?.toString()?.toLowerCase()?.startsWith("k") ? (
-															<h2 className="text-3xl mb-2 font-semibold text-black">
-																{++questionIndex}
-															</h2>
-														) : (
-															<h2 className="text-3xl mb-2 font-semibold text-black">
-																Задание {++questionIndex}
-															</h2>
-														)}
-														
-														<p className="font-medium italic py-3 text-xl text-gray-600">
-															{test?.description}
-														</p>
-
-														{test?.question_type === 0 && (
-															<audio controls className="w-full my-3">
-																<source
-																	src={`${test?.file}`}
-																	type="audio/mpeg"
-																/>
-																Ваш браузер не поддерживает аудио элемент.
-															</audio>
-														)}
-														
-														{/*{test?.question_type === 1 &&*/}
-														{/*	/\.(png|jpe?g|webp)$/i.test(test?.file) && (*/}
-														{/*		<img*/}
-														{/*			// src={test?.file}*/}
-														{/*			src={Image}*/}
-														{/*			alt="Question Image"*/}
-														{/*			className="w-full max-h-60 object-cover"*/}
-														{/*		/>*/}
-														{/*	)}*/}
-
-														<p className="font-medium italic text-gray-600">
-															{test?.question_text}
-														</p>
-
-														{test?.question_type === 2 && (
-															<input
-																type="text"
-																placeholder="Введите ответ"
-																className="w-full border border-gray-300 py-2 px-2 rounded focus:outline-none focus:border-[#067BBE] my-2"
-																value={userAnswers[test.id]?.answer_text || ""}
-																onChange={(e) => {
-																	if (!submissionResult) {
-																		handleAnswerSelection(
-																			test.id,
-																			null,
-																			e.target.value
-																		);
-																	}
-																}}
+								{Object.keys(groupedQuestions)?.map((type) => (
+									<div key={type} className="my-6">
+										{categories?.find((el) => el?.id === selectedCategory)?.name?.toString()?.toLowerCase()?.startsWith("k") ? "" : (
+											<h2 className="text-3xl font-bold text-gray-500 mt-4">
+												{questionTypes[type]}
+											</h2>
+										)}
+										
+										<ul className="mt-2 w-full flex justify-between items-stretch flex-wrap">
+											{groupedQuestions[type]?.map((test) => (
+												<li
+													key={test?.id}
+													className="mt-4 p-4 border border-gray-300 rounded-lg shadow md:w-[49%] w-full min-h-[200px] flex flex-col py-4"
+												>
+													{categories?.find((el) => el?.id === selectedCategory)?.name?.toString()?.toLowerCase()?.startsWith("k") ? (
+														<h2 className="text-3xl mb-2 font-semibold text-black">
+															{++questionIndex}
+														</h2>
+													) : (
+														<h2 className="text-3xl mb-2 font-semibold text-black">
+															Задание {++questionIndex}
+														</h2>
+													)}
+													
+													<p className="font-medium italic py-3 text-xl text-gray-600">
+														{test?.description}
+													</p>
+													
+													{test?.question_type === 0 && (
+														<audio controls className="w-full my-3">
+															<source
+																src={`${test?.file}`}
+																type="audio/mpeg"
 															/>
-														)}
-
-														{submissionResult && test?.question_type === 2 && (
-															<>
-																{(() => {
-																	const result =
-																		submissionResult?.data?.answers?.find(
-																			(res) => res.question === test.id
-																		);
-																	const isCorrect = result?.check;
-																	const correctAnswerText =
-																		result?.correct_answer?.answer_text;
-
-																	if (result && !isCorrect) {
-																		return (
-																			<div className="text-red-500 mt-2">
-																				<p>
-																					Ваш ответ:{" "}
-																					{userAnswers[test.id]?.answer_text}
-																				</p>
-																				<p>
-																					Правильный ответ: {correctAnswerText}
-																				</p>
-																			</div>
-																		);
-																	} else if (isCorrect) {
-																		return (
-																			<div className="text-green-500 mt-2">
-																				<p>
-																					Правильный ответ: {correctAnswerText}
-																				</p>
-																			</div>
-																		);
-																	}
-
-																	return null;
-																})()}
-															</>
-														)}
-
-														<div className="flex flex-wrap gap-2 mt-2 w-full">
-															{test?.answers?.map((answer) => {
+															Ваш браузер не поддерживает аудио элемент.
+														</audio>
+													)}
+													
+													{/\.(png|jpe?g|webp)$/i.test(test?.file) && (
+														<img
+															src={test?.file?.replace(/^http:\/\//, "https://")}
+															alt="Question Image"
+															className="w-full max-h-60 object-contain my-2"
+														/>
+													)}
+													
+													<p className="font-medium italic text-gray-600">
+														{test?.question_text}
+													</p>
+													
+													{test?.question_type === 2 && (
+														<input
+															type="text"
+															placeholder="Введите ответ"
+															className="w-full border border-gray-300 py-2 px-2 rounded focus:outline-none focus:border-[#067BBE] my-2"
+															value={userAnswers[test.id]?.answer_text || ""}
+															onChange={(e) => {
+																if (!submissionResult) {
+																	handleAnswerSelection(
+																		test.id,
+																		null,
+																		e.target.value
+																	);
+																}
+															}}
+														/>
+													)}
+													
+													{submissionResult && test?.question_type === 2 && (
+														<>
+															{(() => {
 																const result =
 																	submissionResult?.data?.answers?.find(
 																		(res) => res.question === test.id
 																	);
-																const isCorrect =
-																	result?.correct_answer?.id === answer.id;
-																const isSelected =
-																	userAnswers[test.id]?.answer === answer.id;
-																const isIncorrect =
-																	result && isSelected && !isCorrect;
-
-																if (
-																	renderQuestionType(test?.question_type) !==
-																	"Письмо"
-																) {
+																const isCorrect = result?.check;
+																const correctAnswerText =
+																	result?.correct_answer?.answer_text;
+																
+																if (result && !isCorrect) {
 																	return (
-																		<React.Fragment key={answer?.id}>
-																			<button
-																				key={answer?.id}
-																				className={`w-full py-2 border transition rounded text-gray-500
-                                        ${
-																					isCorrect
-																						? "bg-green-500 border-green-400 text-white"
-																						: isIncorrect
-																						? "bg-red-400 border-red-400 text-white"
-																						: isSelected
-																						? "bg-[#067BBE] text-white"
-																						: "border-gray-400 text-gray-500 hover:bg-gray-400 hover:text-white"
-																				}`}
-																				// className="w-full py-2 border border-gray-500 text-gray-500 hover:bg-gray-500 hover:text-white transition rounded"
-																				onClick={() => {
-																					if (!submissionResult) {
-																						handleAnswerSelection(
-																							test?.id,
-																							answer?.id,
-																							answer?.answer_text
-																						);
-																					}
-																				}}
-																			>
-																				{answer?.answer_text}
-																				{answer?.file &&
-																					(answer?.file_type === 1 ? (
-																						answer?.file && (
-																							<img
-																								src={`${api_url}${answer?.file}`}
-																								alt="Question"
-																								className="mt-2 w-full max-h-14 object-contain"
-																							/>
-																						)
-																					) : (
-																						<audio
-																							controls
-																							className="w-full my-3"
-																						>
-																							<source
-																								src={`${test?.file}`}
-																								type="audio/mpeg"
-																							/>
-																							Ваш браузер не поддерживает аудио
-																							элемент.
-																						</audio>
-																					))}
-																			</button>
-																		</React.Fragment>
+																		<div className="text-red-500 mt-2">
+																			<p>
+																				Ваш ответ:{" "}
+																				{userAnswers[test.id]?.answer_text}
+																			</p>
+																			<p>
+																				Правильный ответ: {correctAnswerText}
+																			</p>
+																		</div>
+																	);
+																} else if (isCorrect) {
+																	return (
+																		<div className="text-green-500 mt-2">
+																			<p>
+																				Правильный ответ: {correctAnswerText}
+																			</p>
+																		</div>
 																	);
 																}
-															})}
-														</div>
-													</li>
-												))}
-											</ul>
-										</div>
-									))}
-
-									{!submissionResult && (
-										<div className="w-full mt-8 text-center">
-											<button
-												onClick={handleSubmitTest}
-												disabled={
-													(questions &&
-														Object.keys(userAnswers).length !==
-															questions?.length) ||
-													loading
-												}
-												className="btn btn-primary disabled:opacity-25 disabled:pointer-events-none"
-											>
-												{loading
-													? "Tekshirilmoqda..."
-													: "Javoblarni tekshirish (Проверить ответы)"}
-											</button>
-										</div>
-									)}
-
-									{submissionResult && (
-										<div className="w-full mt-8 text-center">
-											<button className="text-green-400">
-												To'g'ri javoblar soni:{" "}
-												{submissionResult?.correct_answers_count}
-											</button>
-										</div>
-									)}
-								</>
+																
+																return null;
+															})()}
+														</>
+													)}
+													
+													<div className="flex flex-wrap gap-2 mt-2 w-full">
+														{test?.answers?.map((answer) => {
+															const result =
+																submissionResult?.data?.answers?.find(
+																	(res) => res.question === test.id
+																);
+															const isCorrect =
+																result?.correct_answer?.id === answer.id;
+															const isSelected =
+																userAnswers[test.id]?.answer === answer.id;
+															const isIncorrect =
+																result && isSelected && !isCorrect;
+															
+															if (
+																renderQuestionType(test?.question_type) !==
+																"Письмо"
+															) {
+																return (
+																	<React.Fragment key={answer?.id}>
+																		<button
+																			key={answer?.id}
+																			className={`w-full py-2 border transition rounded text-gray-500
+                                        ${
+																				isCorrect
+																					? "bg-green-500 border-green-400 text-white"
+																					: isIncorrect
+																						? "bg-red-400 border-red-400 text-white"
+																						: isSelected
+																							? "bg-[#067BBE] text-white"
+																							: "border-gray-400 text-gray-500 hover:bg-gray-400 hover:text-white"
+																			}`}
+																			// className="w-full py-2 border border-gray-500 text-gray-500 hover:bg-gray-500 hover:text-white transition rounded"
+																			onClick={() => {
+																				if (!submissionResult) {
+																					handleAnswerSelection(
+																						test?.id,
+																						answer?.id,
+																						answer?.answer_text
+																					);
+																				}
+																			}}
+																		>
+																			{answer?.answer_text}
+																			{answer?.file &&
+																				(answer?.file_type === 1 ? (
+																					answer?.file && (
+																						<img
+																							src={`${api_url}${answer?.file}`}
+																							alt="Question"
+																							className="mt-2 w-full max-h-14 object-contain"
+																						/>
+																					)
+																				) : (
+																					<audio
+																						controls
+																						className="w-full my-3"
+																					>
+																						<source
+																							src={`${test?.file}`}
+																							type="audio/mpeg"
+																						/>
+																						Ваш браузер не поддерживает аудио
+																						элемент.
+																					</audio>
+																				))}
+																		</button>
+																	</React.Fragment>
+																);
+															}
+														})}
+													</div>
+												</li>
+											))}
+										</ul>
+									</div>
+								))}
+								
+								{!submissionResult && (
+									<div className="w-full mt-8 text-center">
+										<button
+											onClick={handleSubmitTest}
+											disabled={
+												(questions &&
+													Object.keys(userAnswers).length !==
+													questions?.length) ||
+												loading
+											}
+											className="btn btn-primary disabled:opacity-25 disabled:pointer-events-none"
+										>
+											{loading
+												? "Tekshirilmoqda..."
+												: "Javoblarni tekshirish (Проверить ответы)"}
+										</button>
+									</div>
+								)}
+								
+								{submissionResult && (
+									<div className="w-full mt-8 text-center">
+										<button className="text-green-400">
+											To'g'ri javoblar soni:{" "}
+											{submissionResult?.correct_answers_count}
+										</button>
+									</div>
+								)}
+							</>
 						</div>
 					)}
 				</div>
 			</div>
 			
-			<ErrorModal isModalOpen={handleModal} closeModal={closeModal} textError={textError} />
+			<ErrorModal isModalOpen={handleModal} closeModal={closeModal} textError={textError}/>
 		</>
 	);
 };
