@@ -10,10 +10,14 @@ import {api_url} from "../../plugins/axios.js";
 import {useNavigate} from "react-router-dom";
 import ErrorModal from "../../components/ErrorModal.jsx";
 import Image from "../../assets/image.png"
+import {useTranslation} from "react-i18next";
 
 const Test = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate()
+	const {t, i18n} = useTranslation();
+	
+	
 	const {loading, categories, questions} = useSelector((state) => state.test);
 	
 	const [selectedCategory, setSelectedCategory] = useState(null);
@@ -69,13 +73,29 @@ const Test = () => {
 		}
 	};
 	
-	const handleAnswerSelection = (questionId, answerId, answerText) => {
-		setUserAnswers((prev) => ({
-			...prev,
-			[questionId]: answerId
-				? {answer: answerId}
-				: {answer_text: answerText},
-		}));
+	const handleAnswerSelection = (questionId, answerId, answerText, answerType) => {
+		setUserAnswers((prev) => {
+			console.log(answerType)
+			if (answerType === 1) {
+				const prevAnswers = prev[questionId]?.answer || [];
+				const isAlreadySelected = prevAnswers.includes(answerId);
+				return {
+					...prev,
+					[questionId]: {
+						answer: isAlreadySelected
+							? prevAnswers.filter((id) => id !== answerId)
+							: [...prevAnswers, answerId],
+					},
+				};
+			} else {
+				return {
+					...prev,
+					[questionId]: answerId
+						? { answer: answerId }
+						: { answer_text: answerText },
+				};
+			}
+		});
 	};
 	
 	const handleSubmitTest = () => {
@@ -83,7 +103,9 @@ const Test = () => {
 			submitTest({
 				answers: Object.entries(userAnswers).map(([question, answerObj]) => ({
 					question,
-					...answerObj,
+					...(Array.isArray(answerObj.answer)
+						? { answer: answerObj.answer }
+						: answerObj),
 				})),
 				variant: selectedVariant,
 			})
@@ -103,14 +125,54 @@ const Test = () => {
 		return acc;
 	}, {});
 	
-	const questionTypes = {
-		0: "Аудирование",
-		1: "Чтение",
-		2: "Письмо",
-		3: "Лексика и грамматика",
-		4: "ИСТОРИЯ РОССИИ",
-		5: "ОСНОВЫ ЗАКОНОДАТЕЛЬСТВА РОССИЙСКОЙ ФЕДЕРАЦИИ",
+	const renderFileByType = (item, index) => {
+		console.log(item?.file?.startsWith("http"))
+		const url = `${item?.file?.startsWith("http") ? "" : api_url}${item?.file}`;
+		const type = item?.file_type;
+		
+		switch (type) {
+			case 0: // Audio
+				return (
+					<audio key={index} controls className="w-full my-3">
+						<source src={url} type="audio/mpeg" />
+						Ваш браузер не поддерживает аудио элемент.
+					</audio>
+				);
+			case 1: // Image
+				return (
+					<img
+						key={index}
+						src={url}
+						alt="Image"
+						className="my-2 max-h-64 w-full object-contain rounded shadow"
+					/>
+				);
+			case 2: // Video
+				return (
+					<video
+						key={index}
+						controls
+						className="my-2 w-full max-h-80 rounded shadow"
+					>
+						<source src={url} type="video/mp4" />
+						Ваш браузер не поддерживает видео элемент.
+					</video>
+				);
+			
+			case 3: // youtube
+				return (
+					<iframe key={index} src={item?.link} className="my-2 w-full max-h-80 rounded shadow" />
+				);
+			
+			default:
+				return (
+					<p key={index} className="text-gray-400 italic">
+						Nomaʼlum fayl turi
+					</p>
+				);
+		}
 	};
+	
 	
 	let questionIndex = 0;
 	
@@ -128,6 +190,7 @@ const Test = () => {
 									setSelectedVariant(null);
 									setSubmissionResult(null);
 									setUserAnswers({});
+									i18n.changeLanguage(category?.category_type)
 								}}
 								className={`px-4 py-2 rounded-t-lg transition-all ${
 									selectedCategory === category.id
@@ -164,7 +227,7 @@ const Test = () => {
 												setUserAnswers({});
 											}}
 										>
-											Variant {variant?.variant_number}
+											{t("variant")} {variant?.variant_number}
 										</li>
 									))}
 							</ul>
@@ -176,48 +239,48 @@ const Test = () => {
 							<>
 								{Object.keys(groupedQuestions)?.map((type) => (
 									<div key={type} className="my-6">
-										{categories?.find((el) => el?.id === selectedCategory)?.name?.toString()?.toLowerCase()?.startsWith("k") ? "" : (
-											<h2 className="text-3xl font-bold text-gray-500 mt-4">
-												{questionTypes[type]}
-											</h2>
-										)}
+										<h2 className="text-3xl font-bold text-gray-500 mt-4">
+											{t(`questionTypes.${type}`)}
+											{/*{questionTypes[type]}*/}
+										</h2>
 										
 										<ul className="mt-2 w-full flex justify-between items-stretch flex-wrap">
 											{groupedQuestions[type]?.map((test) => (
 												<li
 													key={test?.id}
-													className="mt-4 p-4 border border-gray-300 rounded-lg shadow md:w-[49%] w-full min-h-[200px] flex flex-col py-4"
+													className="mt-4 p-4 border border-gray-300 rounded-lg shadow-lg md:w-[49%] w-full min-h-[200px] flex flex-col py-4"
 												>
-													{categories?.find((el) => el?.id === selectedCategory)?.name?.toString()?.toLowerCase()?.startsWith("k") ? (
-														<h2 className="text-3xl mb-2 font-semibold text-black">
-															{++questionIndex}
-														</h2>
-													) : (
-														<h2 className="text-3xl mb-2 font-semibold text-black">
-															Задание {++questionIndex}
-														</h2>
-													)}
+													<h2 className="text-3xl mb-2 font-semibold text-black">
+														{t("question")} {++questionIndex} {test?.answer_type ? "" : ""}
+													</h2>
+													
 													
 													<p className="font-medium italic py-3 text-xl text-gray-600">
 														{test?.description}
 													</p>
 													
-													{test?.question_type === 0 && (
-														<audio controls className="w-full my-3">
-															<source
-																src={`${test?.file}`}
-																type="audio/mpeg"
-															/>
-															Ваш браузер не поддерживает аудио элемент.
-														</audio>
-													)}
+													{renderFileByType(test, 2)}
 													
-													{/\.(png|jpe?g|webp)$/i.test(test?.file) && (
-														<img
-															src={test?.file?.replace(/^http:\/\//, "https://")}
-															alt="Question Image"
-															className="w-full max-h-60 object-contain my-2"
-														/>
+													{/*{test?.file_type === 0 && (*/}
+													{/*	<audio controls className="w-full my-3">*/}
+													{/*		<source*/}
+													{/*			src={`${test?.file}`}*/}
+													{/*			type="audio/mpeg"*/}
+													{/*		/>*/}
+													{/*		Ваш браузер не поддерживает аудио элемент.*/}
+													{/*	</audio>*/}
+													{/*)}*/}
+													
+													{/*{test?.file_type === 1 && (*/}
+													{/*	<img*/}
+													{/*		src={test?.file?.replace(/^http:\/\//, "https://")}*/}
+													{/*		alt="Question Image"*/}
+													{/*		className="w-full max-h-60 object-contain my-2"*/}
+													{/*	/>*/}
+													{/*)}*/}
+													
+													{test?.additional_question_files?.map((item, index) =>
+														renderFileByType(item, index)
 													)}
 													
 													<p className="font-medium italic text-gray-600">
@@ -227,7 +290,7 @@ const Test = () => {
 													{test?.question_type === 2 && (
 														<input
 															type="text"
-															placeholder="Введите ответ"
+															placeholder={t("enter_answer")}
 															className="w-full border border-gray-300 py-2 px-2 rounded focus:outline-none focus:border-[#067BBE] my-2"
 															value={userAnswers[test.id]?.answer_text || ""}
 															onChange={(e) => {
@@ -257,11 +320,11 @@ const Test = () => {
 																	return (
 																		<div className="text-red-500 mt-2">
 																			<p>
-																				Ваш ответ:{" "}
+																				{t("your_answer")}:{" "}
 																				{userAnswers[test.id]?.answer_text}
 																			</p>
 																			<p>
-																				Правильный ответ: {correctAnswerText}
+																				{t("correct_answer")}: {correctAnswerText}
 																			</p>
 																		</div>
 																	);
@@ -269,7 +332,7 @@ const Test = () => {
 																	return (
 																		<div className="text-green-500 mt-2">
 																			<p>
-																				Правильный ответ: {correctAnswerText}
+																				{t("correct_answer")}: {correctAnswerText}
 																			</p>
 																		</div>
 																	);
@@ -286,12 +349,20 @@ const Test = () => {
 																submissionResult?.data?.answers?.find(
 																	(res) => res.question === test.id
 																);
+															
+															const isSelected =
+																test?.answer_type === 1
+																	? userAnswers[test.id]?.answer?.includes(answer.id)
+																	: userAnswers[test.id]?.answer === answer.id;
+															
 															const isCorrect =
 																result?.correct_answer?.id === answer.id;
-															const isSelected =
-																userAnswers[test.id]?.answer === answer.id;
+															
 															const isIncorrect =
-																result && isSelected && !isCorrect;
+																result &&
+																isSelected &&
+																!isCorrect &&
+																test?.answer_type !== 1;
 															
 															if (
 																renderQuestionType(test?.question_type) !==
@@ -317,7 +388,8 @@ const Test = () => {
 																					handleAnswerSelection(
 																						test?.id,
 																						answer?.id,
-																						answer?.answer_text
+																						answer?.answer_text,
+																						test?.answer_type
 																					);
 																				}
 																			}}

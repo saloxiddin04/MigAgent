@@ -1,0 +1,18 @@
+{
+  "check_answers": "检查答案",
+  "correct_answer_count": "正确答案数量",
+  "question": "问题",
+  "enter_answer": "输入答案",
+  "correct_answer": "正确答案",
+  "your_answer": "你的答案",
+  "variant": "变体",
+  "questionTypes": {
+    "0": "听力",
+    "1": "阅读",
+    "2": "写作",
+    "3": "词汇和语法",
+    "4": "俄罗斯历史",
+    "5": "俄罗斯联邦立法基础",
+    "6": "总体"
+  }
+}

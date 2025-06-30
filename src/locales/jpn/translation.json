@@ -1,0 +1,18 @@
+{
+  "check_answers": "回答を確認する",
+  "correct_answer_count": "正解数",
+  "question": "問題",
+  "enter_answer": "答えを入力してください",
+  "correct_answer": "正解",
+  "your_answer": "あなたの答え",
+  "variant": "バリエーション",
+  "questionTypes": {
+    "0": "リスニング",
+    "1": "リーディング",
+    "2": "ライティング",
+    "3": "語彙と文法",
+    "4": "ロシアの歴史",
+    "5": "ロシア連邦の立法基礎",
+    "6": "全体"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "check_answers": "Antworten überprüfen",
+  "correct_answer_count": "Anzahl der richtigen Antworten",
+  "question": "Frage",
+  "enter_answer": "Antwort eingeben",
+  "correct_answer": "Richtige Antwort",
+  "your_answer": "Ihre Antwort",
+  "variant": "Variante",
+  "questionTypes": {
+    "0": "Hörverstehen",
+    "1": "Leseverstehen",
+    "2": "Schreiben",
+    "3": "Wortschatz und Grammatik",
+    "4": "Geschichte Russlands",
+    "5": "Grundlagen der Gesetzgebung der Russischen Föderation",
+    "6": "Allgemein"
+  }
+}
