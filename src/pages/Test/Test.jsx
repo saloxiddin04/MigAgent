@@ -167,7 +167,7 @@ const Test = () => {
 			default:
 				return (
 					<p key={index} className="text-gray-400 italic">
-						Nomaʼlum fayl turi
+					
 					</p>
 				);
 		}
@@ -345,24 +345,45 @@ const Test = () => {
 													
 													<div className="flex flex-wrap gap-2 mt-2 w-full">
 														{test?.answers?.map((answer) => {
-															const result =
-																submissionResult?.data?.answers?.find(
-																	(res) => res.question === test.id
-																);
+															// const result =
+															// 	submissionResult?.data?.answers?.find(
+															// 		(res) => res.question === test.id
+															// 	);
+															//
+															// const isSelected =
+															// 	test?.answer_type === 1
+															// 		? userAnswers[test.id]?.answer?.includes(answer.id)
+															// 		: userAnswers[test.id]?.answer === answer.id;
+															//
+															// const isCorrect =
+															// 	result?.correct_answer?.id === answer.id;
+															//
+															// const isIncorrect =
+															// 	result &&
+															// 	isSelected &&
+															// 	!isCorrect &&
+															// 	test?.answer_type !== 1;
 															
-															const isSelected =
-																test?.answer_type === 1
-																	? userAnswers[test.id]?.answer?.includes(answer.id)
-																	: userAnswers[test.id]?.answer === answer.id;
+															const result = submissionResult?.data?.answers?.find(
+																(res) => res.question === test.id
+															);
 															
-															const isCorrect =
-																result?.correct_answer?.id === answer.id;
+															const isMultiple = Number(test?.answer_type) === 1;
 															
-															const isIncorrect =
-																result &&
-																isSelected &&
-																!isCorrect &&
-																test?.answer_type !== 1;
+															// userning tanlagan javobi
+															const isSelected = isMultiple
+																? userAnswers[test.id]?.answer?.includes(answer.id)
+																: userAnswers[test.id]?.answer === answer.id;
+															
+															// server qaytargan to‘g‘ri javoblar ro‘yxati
+															const correctAnswerIds = Array.isArray(result?.correct_answer)
+																? result.correct_answer.map((a) => a.id)
+																: result?.correct_answer?.id
+																	? [result.correct_answer.id]
+																	: [];
+															
+															const isCorrect = correctAnswerIds.includes(answer.id);
+															const isIncorrect = result && isSelected && !isCorrect;
 															
 															if (
 																renderQuestionType(test?.question_type) !==
