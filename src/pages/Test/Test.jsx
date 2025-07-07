@@ -103,20 +103,24 @@ const Test = () => {
 			submitTest({
 				answers: Object.entries(userAnswers).map(([question, answerObj]) => ({
 					question,
-					...(Array.isArray(answerObj.answer)
-						? { answer: answerObj.answer }
-						: answerObj),
+					answer: Array.isArray(answerObj.answer)
+						? answerObj.answer
+						: answerObj.answer
+							? [answerObj.answer]
+							: [],
+					...(answerObj.answer_text && { answer_text: answerObj.answer_text }),
 				})),
 				variant: selectedVariant,
 			})
-		).then(({payload}) => {
+		).then(({ payload }) => {
 			if (payload?.status === 400) {
-				setTextError(payload?.response?.data?.error)
-				setHandleModal(true)
+				setTextError(payload?.response?.data?.error);
+				setHandleModal(true);
 			}
 			setSubmissionResult(payload);
-		})
+		});
 	};
+	
 	
 	const groupedQuestions = (questions || []).reduce((acc, question) => {
 		const type = question?.question_type;
