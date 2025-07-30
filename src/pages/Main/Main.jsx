@@ -2,7 +2,7 @@ import React from 'react';
 import {Swiper, SwiperSlide} from "swiper/react";
 import {Autoplay} from "swiper/modules";
 import image from "../../assets/image.png";
-import image1 from "../../assets/image1.png";
+import image1 from "../../assets/image1.jpg";
 import {useNavigate} from "react-router-dom";
 import {getUserData} from "../../auth/jwtService.js";
 import {toast} from "react-toastify";
@@ -12,7 +12,7 @@ const Main = () => {
 
 	return (
 		<main className="bg-[rgb(248,249,250)] h-full">
-			<div className="container mx-auto pt-36">
+			<div className="container mx-auto pt-48">
 				<Swiper
 					className={"mySwiper w-full"}
 					centeredSlides={true}
@@ -25,12 +25,11 @@ const Main = () => {
 				>
 					<SwiperSlide className="w-full">
 						<div
-							className="pt-5 flex flex-col lg:flex-row justify-between items-center">
+							className="pt-10 flex flex-col lg:flex-row justify-between items-center">
 							<img src={image1} alt="Image" className="w-[500px] h-auto w-50 mb-3 md:mb-0"/>
 							<p className="px-3 text-3xl">
-								<strong className="text-[#3f79bc]">Namunaviy Sinov testlari </strong>
-								Sizga rus tili bo‘yicha bilimlaringizni baholash, imtihon savollari bilan tanishish hamda unga yanada
-								yaxshiroq tayyorgarlik ko‘rish imkonini beradi!
+								Mazkur sahifa <strong className="text-[#3f79bc]">EPS-TOPIK </strong> imtihoniga tayyorgarlik hamda
+								koreys tilidagi bilim va ko‘nikmalaringizni mustaqil tekshirish uchun mo‘ljallangan.
 							</p>
 						</div>
 					</SwiperSlide>
