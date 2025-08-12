@@ -14,7 +14,7 @@ const Footer = () => {
 							<img
 								src={logo_footer}
 								alt="LOGO"
-								className="md:w-2/4 w-32 object-contain"
+								className="md:w-2/6 w-28 object-contain"
 							/>
 						</div>
 						{/* Contact and Social Media Section */}

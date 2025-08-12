@@ -1,6 +1,6 @@
 import React from 'react';
 import {Link, NavLink, useNavigate} from "react-router-dom";
-import logo from "../assets/Logo_Color.svg"
+import logo from "../assets/logo.jpg"
 import {getUserData, logout} from "../auth/jwtService.js";
 
 const Navbar = () => {
@@ -16,7 +16,7 @@ const Navbar = () => {
 								<img
 									src={logo}
 									alt="logo"
-									className="md:w-100 w-50"
+									className="md:w-100 w-50 h-32 object-cover"
 								/>
 							</NavLink>
 						</div>
