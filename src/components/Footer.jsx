@@ -1,5 +1,5 @@
 import React from "react";
-import logo_footer from "../assets/Logo_Color.svg";
+import logo_footer from "../assets/logo.svg";
 
 const Footer = () => {
 	return (
@@ -14,7 +14,7 @@ const Footer = () => {
 							<img
 								src={logo_footer}
 								alt="LOGO"
-								className="md:w-2/6 w-28 object-contain"
+								// className="md:w-2/6 w-28 object-contain"
 							/>
 						</div>
 						{/* Contact and Social Media Section */}
