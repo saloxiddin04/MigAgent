@@ -29,9 +29,9 @@ instance.interceptors.response.use(
 	(error) => {
 		if (error.response) {
 			if (error.response.status === 401) {
-				// logout();
+				logout();
 				if (window.location.pathname !== "/login") {
-					// window.location.href = "/";
+					window.location.href = "/";
 				}
 			}
 		}
