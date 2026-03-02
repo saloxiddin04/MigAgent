@@ -33,6 +33,16 @@ const Profile = () => {
 	const [district, setDistrict] = useState(null)
 
 	useEffect(() => {
+		dispatch(getUserDetail()).then(({payload}) => {
+			setFirstName(payload?.first_name)
+			setLastNane(payload?.last_name)
+			setCountry(payload?.country?.id || getUserData()?.country)
+			setDistrict(payload?.district?.id || getUserData()?.district)
+			setRegion(payload?.region?.id || getUserData()?.region)
+		})
+	}, [dispatch])
+
+	useEffect(() => {
 		if (JSON.parse(getCookie("auth_status") || "{}") === "done") {
 			setFirstName(getUserData()?.first_name)
 			setLastNane(getUserData()?.last_name)
@@ -64,8 +74,8 @@ const Profile = () => {
 		if (!country) return toast.error("Iltimos, davlat tanlang.")
 		if (countries?.find((el) => el?.id === country)?.regions?.length && !region) return toast.error("Iltimos, shahar/viloyat tanlang.")
 		if (districts && !district) return toast.error("Iltimos, tuman tanlang.")
-		
-		if (JSON.parse(getCookie("auth_status") || "{}") === "done") {
+
+		if (JSON.parse(getCookie("auth_type") || "{}") === "google" && JSON.parse(getCookie("auth_status") || "{}") === "new") {
 			dispatch(updateUser({first_name, last_name, mid_name, login, password, re_password, platform_usage, work_abroad_status, country, district, region}))?.then(() => {
 				toast.success("Muvofaqqiyatli yangilandi!")
 				dispatch(getUserDetail())?.then(({payload}) => {
@@ -73,27 +83,37 @@ const Profile = () => {
 				})
 			})
 		} else {
-			updateUserAuth({
-				first_name,
-				last_name,
-				mid_name,
-				platform_usage,
-				work_abroad_status,
-				login,
-				password,
-				re_password,
-				country,
-				district,
-				region
-			})
-				.then(() => {
-					toast.success("Successfully");
-					navigate("/")
+			if (JSON.parse(getCookie("auth_status") || "{}") === "done") {
+				dispatch(updateUser({first_name, last_name, mid_name, login, password, re_password, platform_usage, work_abroad_status, country, district, region}))?.then(() => {
+					toast.success("Muvofaqqiyatli yangilandi!")
+					dispatch(getUserDetail())?.then(({payload}) => {
+						setUserData(payload)
+					})
 				})
-				.catch((err) => {
-					toast.error(err?.response?.data?.error || err?.message);
-				});
+			} else {
+				updateUserAuth({
+					first_name,
+					last_name,
+					mid_name,
+					platform_usage,
+					work_abroad_status,
+					login,
+					password,
+					re_password,
+					country,
+					district,
+					region
+				})
+					.then(() => {
+						toast.success("Successfully");
+						navigate("/")
+					})
+					.catch((err) => {
+						toast.error(err?.response?.data?.error || err?.message);
+					});
+			}
 		}
+
 	};
 	
 	return (
@@ -251,54 +271,56 @@ const Profile = () => {
 									))}
 								</select>
 							</div>
-							
-							<div className="my-4 lg:w-[33%] w-full">
-								<div className="flex justify-between">
-									<label
-										htmlFor="login"
-										className="text-sm text-blue-400 ml-4 mb-1"
-									>
-										Login
-									</label>
-								</div>
-								
-								<input
-									id="login"
-									required
-									type="text"
-									name="login"
-									placeholder="Login"
-									className="form-input"
-									value={login || ""}
-									onChange={(e) => setLogin(e.target.value?.toLowerCase()?.trim())}
-								/>
-							</div>
-							
-							{JSON.parse(getCookie("auth_status") || "{}") !== "done" && (
+
+							{JSON.parse(getCookie("auth_type") || "{}") !== "google" && (
 								<>
 									<div className="my-4 lg:w-[33%] w-full">
 										<div className="flex justify-between">
 											<label
-												htmlFor="password"
+												htmlFor="login"
 												className="text-sm text-blue-400 ml-4 mb-1"
 											>
-												Parol
+												Login
 											</label>
 										</div>
-										
-										<div
-											className="flex items-center gap-2 border w-full py-[10px] px-[25px] border-[#3b82f6] rounded-[8px] focus-within:shadow-[5px_5px_5px_rgba(0,0,0,0.3)] transition">
-											<input
-												id="password"
-												required={JSON.parse(getCookie("auth_status") || "{}") !== "done"}
-												type={visible ? "text" : "password"}
-												name="password"
-												placeholder="Parol"
-												className="w-full outline-none"
-												value={password || ""}
-												onChange={(e) => setPassword(e.target.value?.trim())}
-											/>
-											<span onClick={() => setVisible(!visible)}>
+
+										<input
+											id="login"
+											required
+											type="text"
+											name="login"
+											placeholder="Login"
+											className="form-input"
+											value={login || ""}
+											onChange={(e) => setLogin(e.target.value?.toLowerCase()?.trim())}
+										/>
+									</div>
+
+									{JSON.parse(getCookie("auth_status") || "{}") !== "done" && (
+										<>
+											<div className="my-4 lg:w-[33%] w-full">
+												<div className="flex justify-between">
+													<label
+														htmlFor="password"
+														className="text-sm text-blue-400 ml-4 mb-1"
+													>
+														Parol
+													</label>
+												</div>
+
+												<div
+													className="flex items-center gap-2 border w-full py-[10px] px-[25px] border-[#3b82f6] rounded-[8px] focus-within:shadow-[5px_5px_5px_rgba(0,0,0,0.3)] transition">
+													<input
+														id="password"
+														required={JSON.parse(getCookie("auth_status") || "{}") !== "done"}
+														type={visible ? "text" : "password"}
+														name="password"
+														placeholder="Parol"
+														className="w-full outline-none"
+														value={password || ""}
+														onChange={(e) => setPassword(e.target.value?.trim())}
+													/>
+													<span onClick={() => setVisible(!visible)}>
 		                {
 			                visible
 				                ?
@@ -307,32 +329,32 @@ const Profile = () => {
 				                <i className="fa fa-eye-slash text-[#3b82f6]" aria-hidden="true"></i>
 		                }
                   </span>
-										</div>
-									</div>
-									
-									<div className="my-4 lg:w-[33%] w-full">
-										<div className="flex justify-between">
-											<label
-												htmlFor="re_password"
-												className="text-sm text-blue-400 ml-4 mb-1"
-											>
-												Parol tasdiqlash
-											</label>
-										</div>
-										
-										<div
-											className="flex items-center gap-2 border w-full py-[10px] px-[25px] border-[#3b82f6] rounded-[8px] focus-within:shadow-[5px_5px_5px_rgba(0,0,0,0.3)] transition">
-											<input
-												id="re_password"
-												required={JSON.parse(getCookie("auth_status") || "{}") !== "done"}
-												type={visible ? "text" : "password"}
-												name="re_password"
-												placeholder="Parol"
-												className="w-full outline-none"
-												value={re_password || ""}
-												onChange={(e) => setRePassword(e.target.value?.trim())}
-											/>
-											<span onClick={() => setVisible(!visible)}>
+												</div>
+											</div>
+
+											<div className="my-4 lg:w-[33%] w-full">
+												<div className="flex justify-between">
+													<label
+														htmlFor="re_password"
+														className="text-sm text-blue-400 ml-4 mb-1"
+													>
+														Parol tasdiqlash
+													</label>
+												</div>
+
+												<div
+													className="flex items-center gap-2 border w-full py-[10px] px-[25px] border-[#3b82f6] rounded-[8px] focus-within:shadow-[5px_5px_5px_rgba(0,0,0,0.3)] transition">
+													<input
+														id="re_password"
+														required={JSON.parse(getCookie("auth_status") || "{}") !== "done"}
+														type={visible ? "text" : "password"}
+														name="re_password"
+														placeholder="Parol"
+														className="w-full outline-none"
+														value={re_password || ""}
+														onChange={(e) => setRePassword(e.target.value?.trim())}
+													/>
+													<span onClick={() => setVisible(!visible)}>
 		                {
 			                visible
 				                ?
@@ -341,8 +363,10 @@ const Profile = () => {
 				                <i className="fa fa-eye-slash text-[#3b82f6]" aria-hidden="true"></i>
 		                }
                   </span>
-										</div>
-									</div>
+												</div>
+											</div>
+										</>
+									)}
 								</>
 							)}
 							
