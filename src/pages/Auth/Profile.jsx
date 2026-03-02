@@ -15,13 +15,13 @@ const Profile = () => {
 	const navigate = useNavigate()
 
 	const {countries, districts} = useSelector((state) => state.user)
-	
+
 	const [visible, setVisible] = useState(false)
-	
+
 	const [login, setLogin] = useState(null)
 	const [password, setPassword] = useState(null)
 	const [re_password, setRePassword] = useState(null)
-	
+
 	const [first_name, setFirstName] = useState(null)
 	const [last_name, setLastNane] = useState(null)
 	const [mid_name, setMidName] = useState(null)
@@ -63,66 +63,70 @@ const Profile = () => {
 			dispatch(getDistricts(region))
 		}
 	}, [dispatch, region]);
-	
+
 	const updateAuthUser = (e) => {
 		e.preventDefault();
-		
+
 		if (password !== re_password) return toast.error("Parollar bir xil bo'lishi shart!")
 		if (work_abroad_status === null) return toast.error("Iltimos, chet elda ishlash holatini tanlang.")
 		if (platform_usage === null) return toast.error("Iltimos, platformadan foydalanish sababini tanlang.")
-		
+
 		if (!country) return toast.error("Iltimos, davlat tanlang.")
 		if (countries?.find((el) => el?.id === country)?.regions?.length && !region) return toast.error("Iltimos, shahar/viloyat tanlang.")
 		if (districts && !district) return toast.error("Iltimos, tuman tanlang.")
 
-		if (JSON.parse(getCookie("auth_type") || "{}") === "google" && JSON.parse(getCookie("auth_status") || "{}") === "new") {
-			dispatch(updateUser({first_name, last_name, mid_name, login, password, re_password, platform_usage, work_abroad_status, country, district, region}))?.then(() => {
+		if (JSON.parse(getCookie("auth_status") || "{}") === "done") {
+			dispatch(updateUser({
+				first_name,
+				last_name,
+				mid_name,
+				login,
+				password,
+				re_password,
+				platform_usage,
+				work_abroad_status,
+				country,
+				district,
+				region
+			}))?.then(() => {
 				toast.success("Muvofaqqiyatli yangilandi!")
 				dispatch(getUserDetail())?.then(({payload}) => {
 					setUserData(payload)
 				})
 			})
 		} else {
-			if (JSON.parse(getCookie("auth_status") || "{}") === "done") {
-				dispatch(updateUser({first_name, last_name, mid_name, login, password, re_password, platform_usage, work_abroad_status, country, district, region}))?.then(() => {
-					toast.success("Muvofaqqiyatli yangilandi!")
-					dispatch(getUserDetail())?.then(({payload}) => {
-						setUserData(payload)
-					})
+			updateUserAuth({
+				first_name,
+				last_name,
+				mid_name,
+				platform_usage,
+				work_abroad_status,
+				login,
+				password,
+				re_password,
+				country,
+				district,
+				region,
+				is_google: JSON.parse(getCookie("auth_type") || "{}") === "google"
+			})
+				.then(() => {
+					toast.success("Successfully");
+					navigate("/")
 				})
-			} else {
-				updateUserAuth({
-					first_name,
-					last_name,
-					mid_name,
-					platform_usage,
-					work_abroad_status,
-					login,
-					password,
-					re_password,
-					country,
-					district,
-					region
-				})
-					.then(() => {
-						toast.success("Successfully");
-						navigate("/")
-					})
-					.catch((err) => {
-						toast.error(err?.response?.data?.error || err?.message);
-					});
-			}
+				.catch((err) => {
+					toast.error(err?.response?.data?.error || err?.message);
+				});
 		}
 
 	};
-	
+
 	return (
 		<>
 			<div className="w-full min-h-screen flex items-center justify-center bg-[rgb(248,249,250)]">
 				<div className="w-3/4 lg:w-3/4 sm:w-3/4">
 					<div className="mt-36">
 						<form className="w-full flex justify-between flex-wrap" onSubmit={updateAuthUser}>
-							
+
 							<div className="my-4 lg:w-[33%] w-full">
 								<div className="flex justify-between">
 									<label
@@ -132,7 +136,7 @@ const Profile = () => {
 										Ismingiz
 									</label>
 								</div>
-								
+
 								<input
 									id="name"
 									required
@@ -144,7 +148,7 @@ const Profile = () => {
 									onChange={(e) => setFirstName(e.target.value)}
 								/>
 							</div>
-							
+
 							<div className="my-4 lg:w-[33%] w-full">
 								<div className="flex justify-between">
 									<label
@@ -154,7 +158,7 @@ const Profile = () => {
 										Familiyangiz
 									</label>
 								</div>
-								
+
 								<input
 									id="surname"
 									required
@@ -166,7 +170,7 @@ const Profile = () => {
 									onChange={(e) => setLastNane(e.target.value)}
 								/>
 							</div>
-							
+
 							<div className="my-4 lg:w-[33%] w-full">
 								<div className="flex justify-between">
 									<label
@@ -176,7 +180,7 @@ const Profile = () => {
 										Sharifingiz
 									</label>
 								</div>
-								
+
 								<input
 									id="midname"
 									required
@@ -188,7 +192,7 @@ const Profile = () => {
 									onChange={(e) => setMidName(e.target.value)}
 								/>
 							</div>
-							
+
 							<div className="my-4 lg:w-[33%] w-full">
 								<div className="flex justify-between">
 									<label
@@ -198,7 +202,7 @@ const Profile = () => {
 										Davlat tanlash (Yashash manzil)
 									</label>
 								</div>
-								
+
 								<select
 									name="country"
 									id="country"
@@ -217,7 +221,7 @@ const Profile = () => {
 									))}
 								</select>
 							</div>
-							
+
 							<div className="my-4 lg:w-[33%] w-full">
 								<div className="flex justify-between">
 									<label
@@ -227,7 +231,7 @@ const Profile = () => {
 										Viloyat tanlash
 									</label>
 								</div>
-								
+
 								<select
 									name="region"
 									id="region"
@@ -246,7 +250,7 @@ const Profile = () => {
 									))}
 								</select>
 							</div>
-							
+
 							<div className="my-4 lg:w-[33%] w-full">
 								<div className="flex justify-between">
 									<label
@@ -256,7 +260,7 @@ const Profile = () => {
 										Tuman tanlash
 									</label>
 								</div>
-								
+
 								<select
 									name="district"
 									id="district"
@@ -369,7 +373,7 @@ const Profile = () => {
 									)}
 								</>
 							)}
-							
+
 							{/*<div className="my-4 lg:w-[49%] w-full">*/}
 							{/*	<div className="flex justify-between">*/}
 							{/*		<label*/}
@@ -392,8 +396,9 @@ const Profile = () => {
 							{/*		// onChange={(e) => setUser({...user, name: e.target.value})}*/}
 							{/*	/>*/}
 							{/*</div>*/}
-							
-							<div className={`${JSON.parse(getCookie("auth_status") || "{}") === "done" ? "lg:w-[30%]" : "lg:w-[49%] w-full"}`}>
+
+							<div
+								className={`${JSON.parse(getCookie("auth_status") || "{}") === "done" ? "lg:w-[30%]" : "lg:w-[49%] w-full"}`}>
 								<div>
 									<label
 										htmlFor="default-checkbox"
@@ -451,7 +456,7 @@ const Profile = () => {
 									</label>
 								</div>
 							</div>
-							
+
 							<div
 								className={`${JSON.parse(getCookie("auth_status") || "{}") === "done" ? "lg:w-[33%]" : "lg:w-[49%] w-full"}`}>
 								<div className="mt-2">
@@ -495,7 +500,7 @@ const Profile = () => {
 									</label>
 								</div>
 							</div>
-							
+
 							<div className="my-4 w-full flex justify-end">
 								<input
 									className="btn btn-primary"

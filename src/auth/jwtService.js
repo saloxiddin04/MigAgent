@@ -21,10 +21,17 @@ export function loginUser(args) {
 }
 
 export function updateUserAuth(args) {
-	return instance.put("/auth/update-user-auth", args)?.then((res) => {
-		setUserData(res?.data?.user)
-		setCookie("auth_status", JSON.stringify(res?.data?.auth_status));
-	})
+	if (args?.is_google) {
+		return instance.patch("/auth/update-user-auth", args)?.then((res) => {
+			setUserData(res?.data?.user)
+			setCookie("auth_status", JSON.stringify(res?.data?.auth_status));
+		})
+	} else {
+		return instance.put("/auth/update-user-auth", args)?.then((res) => {
+			setUserData(res?.data?.user)
+			setCookie("auth_status", JSON.stringify(res?.data?.auth_status));
+		})
+	}
 }
 
 export function resetPassword(args) {
