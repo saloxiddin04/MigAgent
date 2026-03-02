@@ -5,6 +5,7 @@ import {setAccessToken, setCookie, setRefreshToken} from "../../auth/jwtService.
 import {getUserDetail} from "../../redux/Slices/userDetailSlice/userDetailSlice.js";
 import {toast} from "react-toastify";
 import {useDispatch} from "react-redux";
+import Loader from "../../components/Loader.jsx";
 
 const GoogleCallback = () => {
 	const dispatch = useDispatch()
@@ -42,13 +43,12 @@ const GoogleCallback = () => {
 		axios
 			.post("/auth/google/exchange", { code, state }) // adjust endpoint
 			.then((response) => {
-				console.log(response)
+				setAccessToken(response?.data?.token?.access)
+				setRefreshToken(response?.data?.token?.refresh_token)
+				setCookie("auth_status", JSON.stringify(response?.data?.auth_status));
+				setCookie("user_roles", JSON.stringify(response?.data?.user_roles));
+				setCookie("auth_type", JSON.stringify(response?.data?.auth_type));
 				if (response?.data?.auth_status === "new") {
-					setAccessToken(response?.data?.token?.access)
-					setRefreshToken(response?.data?.token?.refresh_token)
-					setCookie("auth_status", JSON.stringify(response?.data?.auth_status));
-					setCookie("user_roles", JSON.stringify(response?.data?.user_roles));
-					setCookie("auth_type", JSON.stringify(response?.data?.auth_type));
 					navigate("/profile")
 				} else {
 					dispatch(getUserDetail())?.then(() => {
@@ -68,8 +68,8 @@ const GoogleCallback = () => {
 	}, [dispatch, location, navigate]);
 
 	return (
-		<div style={{ textAlign: "center", marginTop: "50px" }}>
-			<p>Processing Google login... Please wait.</p>
+		<div>
+			<Loader />
 		</div>
 	);
 };
