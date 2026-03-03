@@ -9,6 +9,8 @@ import {
 	getUserDetail, setDistricts,
 	updateUser
 } from "../../redux/Slices/userDetailSlice/userDetailSlice.js";
+import axios from "../../plugins/axios.js";
+import instance from "../../plugins/axios.js";
 
 const Profile = () => {
 	const dispatch = useDispatch()
@@ -120,11 +122,41 @@ const Profile = () => {
 
 	};
 
+	console.log(JSON.parse(getCookie("auth_type") || "{}") !== "google")
+
 	return (
 		<>
 			<div className="w-full min-h-screen flex items-center justify-center bg-[rgb(248,249,250)]">
 				<div className="w-3/4 lg:w-3/4 sm:w-3/4">
 					<div className="mt-36">
+						<div className="flex gap-2">
+							<button
+								disabled={getUserData()?.linked?.telegram}
+								className="btn btn-primary disabled:opacity-25"
+								onClick={() => navigate("/register", {state: {is_telegram_linked: true}})}
+							>
+								<i className="fa-brands fa-telegram"></i> Telegram ulash
+							</button>
+							<button
+								disabled={getUserData()?.linked?.google}
+								className="btn btn-danger disabled:opacity-25"
+								onClick={() => {
+									instance.get("/auth/google/connect/start")
+										.then((response) => {
+											if (response.data?.authorize_url) {
+												window.location.href = response.data?.authorize_url
+											}
+										})
+										.catch((err) => {
+											const errorMsg = err.response?.data?.error || err.message;
+											console.log(errorMsg)
+											toast.error(errorMsg)
+										})
+								}}
+							>
+								<i className="fa-brands fa-google"></i> Google ulash
+							</button>
+						</div>
 						<form className="w-full flex justify-between flex-wrap" onSubmit={updateAuthUser}>
 
 							<div className="my-4 lg:w-[33%] w-full">

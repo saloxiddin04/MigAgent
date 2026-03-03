@@ -17,8 +17,6 @@ const Login = () => {
 
 	const [visible, setVisible] = useState(false)
 
-	const [activeTab, setActiveTab] = useState("password");
-
 	const [popup, setPopup] = useState(null);
 
 	// Cleanup popup and message listener on unmount

@@ -1,13 +1,24 @@
 import instance from "../plugins/axios.js";
 
 export function verifyCode(args) {
-	return instance.post("/auth/confirm-verify-code", args)?.then((res) => {
-		setAccessToken(res?.data?.token?.access);
-		setRefreshToken(res?.data?.token?.refresh_token);
-		setCookie("auth_status", JSON.stringify(res?.data?.auth_status));
-		setCookie("user_roles", JSON.stringify(res?.data?.user_roles));
-		return res;
-	})
+	if (args?.is_telegram_linked) {
+		return instance.post("/auth/telegram/link/confirm", args)?.then((res) => {
+			console.log(res)
+			// setAccessToken(res?.data?.token?.access);
+			// setRefreshToken(res?.data?.token?.refresh_token);
+			// setCookie("auth_status", JSON.stringify(res?.data?.auth_status));
+			// setCookie("user_roles", JSON.stringify(res?.data?.user_roles));
+			return res;
+		})
+	} else {
+		return instance.post("/auth/confirm-verify-code", args)?.then((res) => {
+			setAccessToken(res?.data?.token?.access);
+			setRefreshToken(res?.data?.token?.refresh_token);
+			setCookie("auth_status", JSON.stringify(res?.data?.auth_status));
+			setCookie("user_roles", JSON.stringify(res?.data?.user_roles));
+			return res;
+		})
+	}
 }
 
 export function loginUser(args) {
@@ -46,6 +57,7 @@ export function logout() {
 	document.cookie = "user=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 	document.cookie = "auth_status=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 	document.cookie = "user_roles=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+	document.cookie = "auth_type=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 	window.location.reload()
 	window.location.href = "/"
 }

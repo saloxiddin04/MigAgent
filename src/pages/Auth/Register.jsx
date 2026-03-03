@@ -13,10 +13,10 @@ const Register = () => {
 	const {state} = useLocation()
 	
 	const [code, setCode] = useState(null)
-	
+
 	const registerUser = (e) => {
 		e.preventDefault();
-		verifyCode({code})?.then((res) => {
+		verifyCode({code, is_telegram_linked: state?.is_telegram_linked})?.then((res) => {
 			if (res?.data?.auth_status === "new") {
 				navigate("/profile")
 			} else {

@@ -12,6 +12,7 @@ import Forgot from "./pages/Auth/Forgot.jsx";
 import Dashboard from "./pages/Dashboard/Dashboard.jsx";
 import NotFound from "./pages/NotFound.jsx";
 import GoogleCallback from "./pages/Auth/GoogleCallback.jsx";
+import GoogleConnectCallback from "./pages/Auth/GoogleConnectCallback.jsx";
 // import {getUserData} from "./auth/jwtService.js";
 
 const App = () => {
@@ -53,6 +54,7 @@ const App = () => {
             <Route path="/" element={<Main/>}/>
             <Route path="/register" element={<Register/>}/>
             <Route path="/auth/google/callback" element={<GoogleCallback/>}/>
+            <Route path="/auth/google/connect/callback" element={<GoogleConnectCallback/>}/>
             <Route path="/forgot" element={<Forgot/>}/>
             <Route path="/login" element={<Login/>}/>
             <Route path="/profile" element={<Profile/>}/>
