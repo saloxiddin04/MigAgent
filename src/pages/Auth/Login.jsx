@@ -175,7 +175,7 @@ const Login = () => {
 						</div>
 					</form>
 					<button onClick={handleGoogleLogin} className="btn btn-primary w-full">
-						Google orqali kirish
+						<span className="mr-2"><i className="fa-brands fa-google"></i></span> Google orqali kirish
 					</button>
 					<hr className="my-4 border border-gray-300 w-full h-[1px]"/>
 					<div className="w-full text-center">
