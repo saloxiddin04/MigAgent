@@ -111,6 +111,15 @@ const Login = () => {
 		}
 	};
 
+	const handleMyIdLogin = async () => {
+		await axios.get("auth/myid/qr-code").then((response) => {
+			console.log(response)
+		}).catch((error) => {
+			toast.error("Error initiating MyId login");
+			console.error(error);
+		})
+	}
+
 	return (
 		<div className="w-full min-h-screen flex items-center justify-center bg-[rgb(248,249,250)]">
 			<div className="w-3/4 lg:w-1/4 sm:w-2/4">
@@ -174,8 +183,11 @@ const Login = () => {
 							/>
 						</div>
 					</form>
-					<button onClick={handleGoogleLogin} className="btn btn-primary w-full">
+					<button onClick={handleGoogleLogin} className="btn btn-primary w-full mb-4">
 						<span className="mr-2"><i className="fa-brands fa-google"></i></span> Google orqali kirish
+					</button>
+					<button onClick={handleMyIdLogin} className="btn btn-primary w-full">
+						<span className="mr-2"><i className="fa-solid fa-qrcode"></i></span> MyId orqali kirish
 					</button>
 					<hr className="my-4 border border-gray-300 w-full h-[1px]"/>
 					<div className="w-full text-center">
