@@ -109,7 +109,7 @@ const Profile = () => {
 				country,
 				district,
 				region,
-				is_google: JSON.parse(getCookie("auth_type") || "{}") === "google"
+				is_google: JSON.parse(getCookie("auth_type") || "{}") === ("google" && "myid")
 			})
 				.then(() => {
 					toast.success("Successfully");
@@ -308,7 +308,7 @@ const Profile = () => {
 								</select>
 							</div>
 
-							{JSON.parse(getCookie("auth_type") || "{}") !== "google" && (
+							{JSON.parse(getCookie("auth_type") || "{}") !== "google" || JSON.parse(getCookie("auth_type") || "{}") !== "myid" && (
 								<>
 									<div className="my-4 lg:w-[33%] w-full">
 										<div className="flex justify-between">

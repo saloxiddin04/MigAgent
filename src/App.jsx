@@ -57,7 +57,7 @@ const App = () => {
             <Route path="/auth/google/callback" element={<GoogleCallback/>}/>
             <Route path="/auth/google/connect/callback" element={<GoogleConnectCallback/>}/>
 
-            <Route path="/auth/myid" element={<MyIdCallBack/>}/>
+            <Route path="/myid" element={<MyIdCallBack/>}/>
 
             <Route path="/forgot" element={<Forgot/>}/>
             <Route path="/login" element={<Login/>}/>

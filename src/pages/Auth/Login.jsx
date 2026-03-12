@@ -111,13 +111,8 @@ const Login = () => {
 		}
 	};
 
-	const handleMyIdLogin = async () => {
-		await axios.get("auth/myid/qr-code").then((response) => {
-			console.log(response)
-		}).catch((error) => {
-			toast.error("Error initiating MyId login");
-			console.error(error);
-		})
+	const handleMyIdLogin = () => {
+		window.location.href = axios.defaults.baseURL + "/auth/myid/qr-code/state=getQrCode"
 	}
 
 	return (
