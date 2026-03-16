@@ -14,6 +14,7 @@ import NotFound from "./pages/NotFound.jsx";
 import GoogleCallback from "./pages/Auth/GoogleCallback.jsx";
 import GoogleConnectCallback from "./pages/Auth/GoogleConnectCallback.jsx";
 import MyIdCallBack from "./pages/Auth/MyIdCallBack.jsx";
+import MyIdSdk from "./pages/Auth/MyIdSdk.jsx";
 // import {getUserData} from "./auth/jwtService.js";
 
 const App = () => {
@@ -58,6 +59,7 @@ const App = () => {
             <Route path="/auth/google/connect/callback" element={<GoogleConnectCallback/>}/>
 
             <Route path="/myid" element={<MyIdCallBack/>}/>
+            <Route path="/myid-sdk" element={<MyIdSdk/>}/>
 
             <Route path="/forgot" element={<Forgot/>}/>
             <Route path="/login" element={<Login/>}/>

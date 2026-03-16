@@ -181,8 +181,11 @@ const Login = () => {
 					<button onClick={handleGoogleLogin} className="btn btn-primary w-full mb-4">
 						<span className="mr-2"><i className="fa-brands fa-google"></i></span> Google orqali kirish
 					</button>
-					<button onClick={handleMyIdLogin} className="btn btn-primary w-full">
+					<button onClick={handleMyIdLogin} className="btn btn-primary w-full mb-4">
 						<span className="mr-2"><i className="fa-solid fa-qrcode"></i></span> MyId orqali kirish
+					</button>
+					<button onClick={() => navigate("/myid-sdk")} className="btn btn-primary w-full">
+						<span className="mr-2"><i className="fa-solid fa-qrcode"></i></span> MyId sdk orqali kirish
 					</button>
 					<hr className="my-4 border border-gray-300 w-full h-[1px]"/>
 					<div className="w-full text-center">

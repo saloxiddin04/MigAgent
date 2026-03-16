@@ -14,8 +14,9 @@ const MyIdCallBack = () => {
 
 	useEffect(() => {
 		const params = new URLSearchParams(location.search);
-		const code = params.get("code");
-		const state = params.get("state");
+		const code = params.get("code") || params.get("auth_code");
+
+		const codeKey = params.get("code") ? "code" : "auth_code";
 
 		axios.post("/auth/login/myid/user", {code}).then((response) => {
 			setAccessToken(response?.data?.token?.access)
