@@ -15,10 +15,11 @@ const MyIdCallBack = () => {
 	useEffect(() => {
 		const params = new URLSearchParams(location.search);
 		const code = params.get("code") || params.get("auth_code");
+		const session_id = params.get("session_id")
 
 		const codeKey = params.get("code") ? "code" : "auth_code";
 
-		axios.post("/auth/login/myid/user", {code}).then((response) => {
+		axios.post("/auth/login/myid/user", {[codeKey]: code}).then((response) => {
 			setAccessToken(response?.data?.token?.access)
 			setRefreshToken(response?.data?.token?.refresh_token)
 			setCookie("auth_status", JSON.stringify(response?.data?.auth_status));
@@ -32,6 +33,7 @@ const MyIdCallBack = () => {
 					toast.success("Successfully logged");
 				})
 			}
+			axios.post(`/auth/myid/sdk?session_id=${session_id}`, {})
 		}).catch((err) => {
 			const errorMsg = err.response?.data?.error || err.message;
 			console.log(errorMsg)
