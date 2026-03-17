@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import logo from "../../assets/Logo_Color.svg";
-import instance from "../../plugins/axios.js";
 import axios from "../../plugins/axios.js";
 import moment from "moment";
 
