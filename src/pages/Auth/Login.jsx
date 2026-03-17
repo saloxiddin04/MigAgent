@@ -18,6 +18,7 @@ const Login = () => {
 	const [visible, setVisible] = useState(false)
 
 	const [popup, setPopup] = useState(null);
+	const [activeTab, setActiveTab] = useState("credentials");
 
 	// Cleanup popup and message listener on unmount
 	useEffect(() => {
@@ -126,32 +127,54 @@ const Login = () => {
 				</div>
 
 				<div className="mt-8">
-					<form onSubmit={loginFunc}>
-						<div className="my-4">
-							<input
-								id="login"
-								required
-								type="text"
-								name="login"
-								placeholder="Login"
-								className="form-input"
-								value={login || ""}
-								onChange={(e) => setLogin(e.target.value?.toLowerCase()?.trim())}
-							/>
-						</div>
-						<div
-							className="my-4 flex items-center gap-2 border w-full py-[10px] px-[25px] border-[#3b82f6] rounded-[8px] focus-within:shadow-[5px_5px_5px_rgba(0,0,0,0.3)] transition">
-							<input
-								id="password"
-								required
-								type={visible ? "text" : "password"}
-								name="password"
-								placeholder="Parol"
-								className="w-full outline-none"
-								value={password || ""}
-								onChange={(e) => setPassword(e.target.value?.trim())}
-							/>
-							<span onClick={() => setVisible(!visible)}>
+					<div className="flex border-b mb-6">
+						<button 
+							type="button"
+							onClick={() => setActiveTab("credentials")} 
+							className={`flex-1 py-2 text-center transition-colors ${activeTab === "credentials" ? "border-b-2 border-[#3b82f6] text-[#3b82f6] font-bold" : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"}`}>
+							<i className="fa-solid fa-user-lock mr-2"></i> Login/Parol
+						</button>
+						<button 
+							type="button"
+							onClick={() => setActiveTab("google")} 
+							className={`flex-1 py-2 text-center transition-colors ${activeTab === "google" ? "border-b-2 border-[#3b82f6] text-[#3b82f6] font-bold" : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"}`}>
+							<i className="fa-brands fa-google mr-2"></i> Google
+						</button>
+						<button 
+							type="button"
+							onClick={() => setActiveTab("myid")} 
+							className={`flex-1 py-2 text-center transition-colors ${activeTab === "myid" ? "border-b-2 border-[#3b82f6] text-[#3b82f6] font-bold" : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"}`}>
+							<i className="fa-solid fa-qrcode mr-2"></i> MyId
+						</button>
+					</div>
+
+					{activeTab === "credentials" && (
+						<form onSubmit={loginFunc}>
+							<div className="my-4">
+								<input
+									id="login"
+									required
+									type="text"
+									name="login"
+									placeholder="Login"
+									className="form-input"
+									value={login || ""}
+									onChange={(e) => setLogin(e.target.value?.toLowerCase()?.trim())}
+								/>
+							</div>
+							<div
+								className="my-4 flex items-center gap-2 border w-full py-[10px] px-[25px] border-[#3b82f6] rounded-[8px] focus-within:shadow-[5px_5px_5px_rgba(0,0,0,0.3)] transition">
+								<input
+									id="password"
+									required
+									type={visible ? "text" : "password"}
+									name="password"
+									placeholder="Parol"
+									className="w-full outline-none"
+									value={password || ""}
+									onChange={(e) => setPassword(e.target.value?.trim())}
+								/>
+								<span onClick={() => setVisible(!visible)}>
                 {
 	                visible
 		                ?
@@ -160,33 +183,44 @@ const Login = () => {
 		                <i className="fa fa-eye-slash text-[#3b82f6]" aria-hidden="true"></i>
                 }
               </span>
+							</div>
+							<div className="my-4 text-end">
+								<p>
+									<span onClick={() => navigate("/register", {state: {forgot: true}})}
+									      className="text-[#3b82f6] cursor-pointer font-bold">Login yoki parol</span> yodingizdan chiqdimi?
+								</p>
+							</div>
+							<div className="my-4">
+								<input
+									id="confirm"
+									required
+									type="submit"
+									name="confirm"
+									className="btn btn-primary w-full"
+									value={"Kirish"}
+								/>
+							</div>
+						</form>
+					)}
+
+					{activeTab === "google" && (
+						<div className="my-8">
+							<button onClick={handleGoogleLogin} className="btn btn-primary w-full mb-4">
+								<span className="mr-2"><i className="fa-brands fa-google"></i></span> Google orqali kirish
+							</button>
 						</div>
-						<div className="my-4 text-end">
-							<p>
-								<span onClick={() => navigate("/register", {state: {forgot: true}})}
-								      className="text-[#3b82f6] cursor-pointer font-bold">Login yoki parol</span> yodingizdan chiqdimi?
-							</p>
+					)}
+
+					{activeTab === "myid" && (
+						<div className="my-8">
+							<button onClick={handleMyIdLogin} className="btn btn-primary w-full mb-4">
+								<span className="mr-2"><i className="fa-solid fa-qrcode"></i></span> Qr kod orqali kirish
+							</button>
+							<button onClick={() => navigate("/myid-sdk")} className="btn btn-primary w-full">
+								<span className="mr-2"><i className="fa-solid fa-qrcode"></i></span> Face id orqali kirish
+							</button>
 						</div>
-						<div className="my-4">
-							<input
-								id="confirm"
-								required
-								type="submit"
-								name="confirm"
-								className="btn btn-primary w-full"
-								value={"Kirish"}
-							/>
-						</div>
-					</form>
-					<button onClick={handleGoogleLogin} className="btn btn-primary w-full mb-4">
-						<span className="mr-2"><i className="fa-brands fa-google"></i></span> Google orqali kirish
-					</button>
-					<button onClick={handleMyIdLogin} className="btn btn-primary w-full mb-4">
-						<span className="mr-2"><i className="fa-solid fa-qrcode"></i></span> MyId orqali kirish
-					</button>
-					<button onClick={() => navigate("/myid-sdk")} className="btn btn-primary w-full">
-						<span className="mr-2"><i className="fa-solid fa-qrcode"></i></span> MyId sdk orqali kirish
-					</button>
+					)}
 					<hr className="my-4 border border-gray-300 w-full h-[1px]"/>
 					<div className="w-full text-center">
 						<p className="mb-4">Tizimda profilingiz yo'qmi?</p>
