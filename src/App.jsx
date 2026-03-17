@@ -49,7 +49,7 @@ const App = () => {
       {/*/>*/}
 
       <div className="app-container">
-        {pathname !== "/login" && pathname !== "/register" && pathname !== "/forgot" && <Navbar/>}
+        {pathname !== "/login" && pathname !== "/register" && pathname !== "/forgot" && !pathname?.startsWith("/auth") && !pathname?.startsWith("/myid") && <Navbar/>}
 
         <div className="content">
           <Routes>
@@ -70,7 +70,7 @@ const App = () => {
           </Routes>
         </div>
 
-        {pathname !== "/login" && pathname !== "/register" && pathname !== "/forgot" && <Footer/>}
+        {pathname !== "/login" && pathname !== "/register" && pathname !== "/forgot" && !pathname?.startsWith("/auth") && !pathname?.startsWith("/myid") && <Footer/>}
 
         <ToastContainer
           autoClose={2000}
