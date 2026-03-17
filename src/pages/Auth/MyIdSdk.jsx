@@ -6,12 +6,12 @@ import moment from "moment";
 const MyIdSdk = () => {
 	const [pass_data, setPassData] = useState(null)
 	const [birth_date, setBirthday] = useState(null)
-	const [is_resident, setIsResident] = useState(true)
+	const [is_resident, setIsResident] = useState(false)
 
 	const handleLoginSdk = async (e) => {
 		e.preventDefault()
 		if (!pass_data || !birth_date) return;
-		await axios.get("/auth/myid/sdk", {params: {state: "web-sdk-state", pass_data, birth_date, is_resident: is_resident ? 1 : 0}}).then((response) => {
+		await axios.get("/auth/myid/sdk", {params: {state: "web-sdk-state", pass_data, birth_date}}).then((response) => {
 			window.location.href = response?.data?.uri
 		})
 	}
@@ -62,7 +62,7 @@ const MyIdSdk = () => {
 									checked={is_resident}
 									onChange={(e) => setIsResident(e.target.checked)}
 								/>
-								<label htmlFor="residentCheckbox" className="text-sm font-medium text-gray-700 cursor-pointer">O'zbekiston fuqarosi</label>
+								<label htmlFor="residentCheckbox" className="text-sm font-medium text-gray-700 cursor-pointer">Shaxsiy ma'lumotlarimni uzatilishiga va tizimdan foydalanish shartlariga roziman.</label>
 							</div>
 							<div className="my-4">
 								<input
@@ -70,7 +70,8 @@ const MyIdSdk = () => {
 									required
 									type="submit"
 									name="confirm"
-									className="btn btn-primary w-full"
+									className="btn btn-primary w-full disabled:opacity-25"
+									disabled={!is_resident}
 									value={"Kirish"}
 								/>
 							</div>
